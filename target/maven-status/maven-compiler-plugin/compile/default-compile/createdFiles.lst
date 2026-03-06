@@ -1,6 +1,0 @@
-core/Simulation.class
-physics/GravityCalc.class
-Main.class
-core/Body.class
-renderer/SimulationPanel.class
-core/Vector.class
