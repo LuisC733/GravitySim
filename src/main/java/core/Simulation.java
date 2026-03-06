@@ -1,5 +1,5 @@
 package core;
 
-class Simulation(
+class Simulation{
     //
-)
+}
