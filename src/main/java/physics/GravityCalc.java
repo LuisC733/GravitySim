@@ -4,10 +4,10 @@ import core.Vector2D;
 import core.Body;
 
 public class GravityCalc{
-    private final double G = 6.674 * Math.pow(10, -11);
+    private final double G = 6.674e-11;
 
     public Vector2D calculateForce(Body a, Body b){
-        Vector2D vecDisp = a.pos.sub(b.pos);
+        Vector2D vecDisp = b.pos.sub(a.pos);
         double r = vecDisp.magnitude();
         double F = G * (a.mass * b.mass) / Math.pow(r, 2);
         Vector2D vecUnit = vecDisp.normalize();

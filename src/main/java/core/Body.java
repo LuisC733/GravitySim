@@ -21,7 +21,7 @@ public class Body{
     void setPos(Vector2D pos){
         this.pos = pos;
     }
-    Vector2D getPos(){
+    public Vector2D getPos(){
         return pos;
     }
     void setVelo(Vector2D velo){
@@ -29,5 +29,8 @@ public class Body{
     }
     Vector2D getVelo(){
         return velo;
+    }
+    public double getRadius(){
+        return radius;
     }
 }
