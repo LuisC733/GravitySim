@@ -1,33 +1,33 @@
 package core;
 
 public class Body{
-    public Vector2D pos;
-    public Vector2D velo;
-    public Vector2D accl;
+    public Vector3D pos;
+    public Vector3D velo;
+    public Vector3D accl;
     public final double mass;
     public double radius;
 
-    public Body(Vector2D pos, Vector2D velo, double mass, double radius){
+    public Body(Vector3D pos, Vector3D velo, double mass, double radius){
         this.pos = pos;
         this.velo = velo;
         this.mass = mass;
         this.radius = radius;
-        this.accl = new Vector2D(0,0);
+        this.accl = new Vector3D(0,0,0);
     }
-    void applyForce(Vector2D f){  
+    void applyForce(Vector3D f){  
         this.accl = f.scale(1.0/mass);
     }
 
-    void setPos(Vector2D pos){
+    void setPos(Vector3D pos){
         this.pos = pos;
     }
-    public Vector2D getPos(){
+    public Vector3D getPos(){
         return pos;
     }
-    void setVelo(Vector2D velo){
+    void setVelo(Vector3D velo){
         this.velo = velo;
     }
-    Vector2D getVelo(){
+    Vector3D getVelo(){
         return velo;
     }
     public double getRadius(){
