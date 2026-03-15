@@ -66,13 +66,21 @@
     <build>
         <plugins>
         <plugin>
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>exec-maven-plugin</artifactId>
-            <version>3.6.3</version>
-            <configuration>
-                <mainClass>Main</mainClass>
-            </configuration>
-        </plugin>
+    		<groupId>org.codehaus.mojo</groupId>
+    		<artifactId>exec-maven-plugin</artifactId>
+    		<version>3.6.3</version>
+    		<executions>
+        		<execution>
+            		<id>default-cli</id>
+            		<configuration>
+                		<mainClass>com.gravitysim.Main</mainClass>
+                		<jvmArgs>
+                    		<jvmArg>-XstartOnFirstThread</jvmArg>
+                		</jvmArgs>
+            		</configuration>
+        		</execution>
+    		</executions>
+		</plugin>
         </plugins>
     </build>
 </project>

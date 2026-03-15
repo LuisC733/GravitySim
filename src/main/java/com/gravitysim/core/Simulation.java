@@ -1,7 +1,7 @@
-package core;
+package com.gravitysim.core;
 
 import java.util.ArrayList;
-import physics.GravityCalc;
+import com.gravitysim.physics.GravityCalc;
 
 public class Simulation{
     public ArrayList<Body> objects = new ArrayList<>();

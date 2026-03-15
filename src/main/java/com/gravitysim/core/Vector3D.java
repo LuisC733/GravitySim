@@ -1,4 +1,4 @@
-package core;
+package com.gravitysim.core;
 
 public class Vector3D{
 

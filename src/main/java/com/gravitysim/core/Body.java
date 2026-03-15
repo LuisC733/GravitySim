@@ -1,4 +1,4 @@
-package core;
+package com.gravitysim.core;
 
 public class Body{
     public Vector3D pos;
