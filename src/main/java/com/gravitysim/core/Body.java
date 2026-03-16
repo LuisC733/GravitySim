@@ -14,7 +14,7 @@ public class Body{
         this.radius = radius;
         this.accl = new Vector3D(0,0,0);
     }
-    void applyForce(Vector3D f){  
+    void accleration(Vector3D f){  
         this.accl = f.scale(1.0/mass);
     }
 

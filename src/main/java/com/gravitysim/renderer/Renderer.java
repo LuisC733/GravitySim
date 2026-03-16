@@ -11,25 +11,25 @@ import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.system.MemoryStack.*;
 import static org.lwjgl.system.MemoryUtil.*;
 
-public class Window{
+public class Renderer{
 
     private int height, width;
     private String title;
     private long glfwWindow;
 
-    private static Window window = null;
+    private static Renderer window = null;
 
-    private Window(){
+    private Renderer(){
         this.height = 1280;
         this.width = 800;
         this.title = "N-Body Simulation";
     }
 
-    public static Window get(){
-        if(Window.window == null){
-            Window.window = new Window();
+    public static Renderer get(){
+        if(Renderer.window == null){
+            Renderer.window = new Renderer();
         }
-        return Window.window;
+        return Renderer.window;
     }
     public void run(){
         System.out.println("N-Body Simulation" + Version.getVersion());
@@ -79,10 +79,9 @@ public class Window{
     }
     public void loop(){
         while(!glfwWindowShouldClose(glfwWindow)){
-            // poll events 
             glfwPollEvents();
 
-            glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
+            glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
             glClear(GL_COLOR_BUFFER_BIT);
 
             glfwSwapBuffers(glfwWindow);

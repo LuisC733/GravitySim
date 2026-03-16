@@ -6,7 +6,7 @@ import com.gravitysim.renderer.*;
 
 class Main{
     static void main(String[] args){
-        Window window = Window.get();
+        Renderer window = Renderer.get();
         window.run();
     }
 }

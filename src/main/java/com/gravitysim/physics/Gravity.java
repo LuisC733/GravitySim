@@ -3,7 +3,7 @@ package com.gravitysim.physics;
 import com.gravitysim.core.Vector3D;
 import com.gravitysim.core.Body;
 
-public class GravityCalc{
+public class Gravity{
     private final double G = 6.674e-11;
 
     public Vector3D calculateForce(Body a, Body b){

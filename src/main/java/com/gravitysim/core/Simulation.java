@@ -1,15 +1,16 @@
 package com.gravitysim.core;
 
 import java.util.ArrayList;
-import com.gravitysim.physics.GravityCalc;
+
+import com.gravitysim.physics.Gravity;
 
 public class Simulation{
     public ArrayList<Body> objects = new ArrayList<>();
     public ArrayList<Vector3D> listOfForce = new ArrayList<>();
-    double dt = 10000.0;
+    double dt = 10.0;
     
     public void updatePos(){
-        GravityCalc g = new GravityCalc();
+        Gravity g = new Gravity();
         int length = objects.size();
 
         if(listOfForce.size() == 0){
@@ -37,9 +38,10 @@ public class Simulation{
         }
 
         for(int i = 0; i < length; i++){
-            objects.get(i).applyForce(listOfForce.get(i));
+            objects.get(i).accleration(listOfForce.get(i));
         }
 
+        // symplectic euler
         for(int i = 0; i < length; i++){
             Vector3D newVelo = objects.get(i).velo.add(objects.get(i).accl.scale(dt));
             objects.get(i).setVelo(newVelo);
