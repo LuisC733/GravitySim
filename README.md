@@ -23,7 +23,7 @@ src/main/java/
 ├── physics/
 │   └── Gravity.java  # Computes pairwise gravitational forces (Newton's law)
 └── renderer/
-    └── Renderer.java    # Java2D rendering (Stage 1)
+    └── Renderer.java    # 
     |__ ShaderProgram.java #
     |__ BodyRenderer.java #
     |__ SpacetimeGridRenderer.java #
