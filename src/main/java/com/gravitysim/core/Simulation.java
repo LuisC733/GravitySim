@@ -1,7 +1,6 @@
 package com.gravitysim.core;
 
 import java.util.ArrayList;
-
 import com.gravitysim.physics.Gravity;
 
 public class Simulation{
@@ -24,16 +23,15 @@ public class Simulation{
             }
         }
 
+
+        // Accumulate gravitational forces for each body pair
         for(int i = 0; i < length; i++){
             for(int j = i + 1; j < length; j++){
                 Vector3D force = g.calculateForce(objects.get(i), objects.get(j));
                 Vector3D invertedForce = force.invert();
 
-                Vector3D test = listOfForce.get(i).add(force);
-                listOfForce.set(i, test);
-
-                Vector3D invertedTest = listOfForce.get(j).add(invertedForce);
-                listOfForce.set(j, invertedTest);
+                listOfForce.set(i, listOfForce.get(i).add(force));
+                listOfForce.set(j, listOfForce.get(j).add(invertedForce));
             }
         }
 
