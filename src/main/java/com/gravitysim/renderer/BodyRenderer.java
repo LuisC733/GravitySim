@@ -25,7 +25,7 @@ public class BodyRenderer {
     Matrix4f modelMatrix;
 
     void VertexSpecifications(){
-        float[] vertexPositions = new float[(stacks + 1) * (slices + 1) * 3];
+        float[] vertexPositions = new float[((stacks + 1) * (slices + 1) * 3) * 2];
         int[] indices = new int[stacks * slices * 6];
         modelMatrix = new Matrix4f().identity();
 
@@ -37,6 +37,9 @@ public class BodyRenderer {
                 vertexPositions[v++] = (float) (sin(phi) * cos(theta)); // x
                 vertexPositions[v++] = (float) (cos(phi));              // y
                 vertexPositions[v++] = (float) (sin(phi) * sin(theta)); // z
+                vertexPositions[v++] = (float) (sin(phi) * cos(theta)); // nx
+                vertexPositions[v++] = (float) (cos(phi));              // ny
+                vertexPositions[v++] = (float) (sin(phi) * sin(theta)); // nz
             }
         }
         int index = 0;
@@ -67,7 +70,9 @@ public class BodyRenderer {
         glBindBuffer(GL_ARRAY_BUFFER, VBO);
         glBufferData(GL_ARRAY_BUFFER, vertexPositions, GL_STATIC_DRAW);
         glEnableVertexAttribArray(0);
-        glVertexAttribPointer(0, 3, GL_FLOAT, false, 0, 0);
+        glEnableVertexAttribArray(1);
+        glVertexAttribPointer(0, 3, GL_FLOAT, false, 24, 0);
+        glVertexAttribPointer(1, 3, GL_FLOAT, false, 24, 12);
 
         EBO = glGenBuffers();
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);

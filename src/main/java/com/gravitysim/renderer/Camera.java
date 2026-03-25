@@ -10,6 +10,8 @@ public class Camera {
     Vector3f cameraPos = new Vector3f(2,2,3);
     Vector3f center = new Vector3f(0,0,0);
     Vector3f up = new Vector3f(0,1,0);
+    Vector3f lightPos = new Vector3f(8, 5, 6);
+    Vector3f lightColor = new Vector3f(1,1,1);
     Renderer renderer;
 
     void init(){

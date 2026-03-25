@@ -22,6 +22,10 @@ public class Renderer{
     int viewLoc;
     int projectionLoc;
 
+    int lightPosLoc;
+    int viewPosLoc;
+    int lightColorLoc;
+
     int height, width;
     private String title;
     private long glfwWindow;
@@ -93,6 +97,9 @@ public class Renderer{
         modelLoc = glGetUniformLocation(GraphicsPipelineShaderP, "model");
         viewLoc = glGetUniformLocation(GraphicsPipelineShaderP, "view");
         projectionLoc = glGetUniformLocation(GraphicsPipelineShaderP, "projection");
+        lightPosLoc = glGetUniformLocation(GraphicsPipelineShaderP, "lightPos"); 
+        viewPosLoc = glGetUniformLocation(GraphicsPipelineShaderP, "viewPos");
+        lightColorLoc = glGetUniformLocation(GraphicsPipelineShaderP, "lightColor");
         body.VertexSpecifications();
     }
     public void loop(){
@@ -116,15 +123,26 @@ public class Renderer{
         glUseProgram(GraphicsPipelineShaderP);
 
         try (MemoryStack stack = MemoryStack.stackPush()) {
-            FloatBuffer bufferP = memAllocFloat(16);
-            FloatBuffer bufferV = memAllocFloat(16);
-            FloatBuffer bufferM = memAllocFloat(16);
+            FloatBuffer bufferP = stack.mallocFloat(16);
+            FloatBuffer bufferV = stack.mallocFloat(16);
+            FloatBuffer bufferM = stack.mallocFloat(16);
             camera.projectionMatrix.get(bufferP);
             camera.viewMatrix.get(bufferV);
             body.modelMatrix.get(bufferM);
             glUniformMatrix4fv(projectionLoc, false, bufferP);
             glUniformMatrix4fv(viewLoc, false, bufferV);
             glUniformMatrix4fv(modelLoc, false, bufferM);
+        }
+        try(MemoryStack stack = MemoryStack.stackPush()){
+            FloatBuffer bufferLight = stack.mallocFloat(3);
+            FloatBuffer bufferView = stack.mallocFloat(3);
+            FloatBuffer bufferColor = stack.mallocFloat(3);
+            camera.lightPos.get(bufferLight);
+            camera.cameraPos.get(bufferView);
+            camera.lightColor.get(bufferColor);
+            glUniform3fv(lightPosLoc, bufferLight);
+            glUniform3fv(viewPosLoc, bufferView);
+            glUniform3fv(lightColorLoc, bufferColor);
         }
 
         glBindVertexArray(body.VAO);
