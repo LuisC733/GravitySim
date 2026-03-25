@@ -2,18 +2,25 @@ package com.gravitysim.renderer;
 
 import org.lwjgl.*;
 import org.lwjgl.glfw.*;
-import org.lwjgl.opengl.*;
+import org.lwjgl.system.MemoryStack;
 import static org.lwjgl.glfw.Callbacks.*;
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.system.MemoryUtil.*;
+import java.nio.FloatBuffer;
 import static org.lwjgl.opengl.GL30.glBindVertexArray;
 import static org.lwjgl.opengl.GL20.*;
+import org.lwjgl.opengl.GL;
 
 public class Renderer{
     int GraphicsPipelineShaderP = 0;
     BodyRenderer body;
     ShaderProgram program;
+    Camera camera;
+
+    int modelLoc;
+    int viewLoc;
+    int projectionLoc;
 
     int height, width;
     private String title;
@@ -21,7 +28,7 @@ public class Renderer{
 
     private static Renderer window = null;
 
-    Renderer(){
+    private Renderer(){
         this.height = 1280;
         this.width = 800;
         this.title = "N-Body Simulation";
@@ -39,19 +46,14 @@ public class Renderer{
         init();
         loop();
 
-        // Free the window callbacks and destroy the window
 		glfwFreeCallbacks(glfwWindow);
 		glfwDestroyWindow(glfwWindow);
 
-		// Terminate GLFW and free the error callback
 		glfwTerminate();
 		glfwSetErrorCallback(null).free();
     }
     public void init(){
-        // setup an error callback
         GLFWErrorCallback.createPrint(System.err).set();
-
-        // initialize GLFW
         if(!glfwInit()){
             throw new IllegalStateException("Unable to intitialize GLFW");
         }
@@ -67,19 +69,13 @@ public class Renderer{
         glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
         glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 
-        // create window
         glfwWindow = glfwCreateWindow(width, height, title, NULL, NULL);
         if(glfwWindow == NULL){
             throw new RuntimeException("Failed to create Window");
         }
 
-        // make the OpenGL context current
         glfwMakeContextCurrent(glfwWindow);
-
-        // make v-sync
         glfwSwapInterval(1);
-
-        // make window visible
         glfwShowWindow(glfwWindow);
 
         int[] w = new int[1];
@@ -89,8 +85,14 @@ public class Renderer{
         height = h[0];
 
         GL.createCapabilities();
-        CreateGraphicsPipeline();
         body = new BodyRenderer();
+        camera = new Camera();
+        camera.init();
+        System.out.println("width: " + Renderer.get().width + " height: " + Renderer.get().height);
+        CreateGraphicsPipeline();
+        modelLoc = glGetUniformLocation(GraphicsPipelineShaderP, "model");
+        viewLoc = glGetUniformLocation(GraphicsPipelineShaderP, "view");
+        projectionLoc = glGetUniformLocation(GraphicsPipelineShaderP, "projection");
         body.VertexSpecifications();
     }
     public void loop(){
@@ -98,7 +100,7 @@ public class Renderer{
             glfwPollEvents();
 
             glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-            glClear(GL_COLOR_BUFFER_BIT);
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
             Draw();
 
@@ -106,15 +108,28 @@ public class Renderer{
         }
     }
     void Draw(){
-        glDisable(GL_DEPTH_TEST);
+        glEnable(GL_DEPTH_TEST);
         glDisable(GL_CULL_FACE);
 
         glViewport(0, 0, width, height);
 
         glUseProgram(GraphicsPipelineShaderP);
 
+        try (MemoryStack stack = MemoryStack.stackPush()) {
+            FloatBuffer bufferP = memAllocFloat(16);
+            FloatBuffer bufferV = memAllocFloat(16);
+            FloatBuffer bufferM = memAllocFloat(16);
+            camera.projectionMatrix.get(bufferP);
+            camera.viewMatrix.get(bufferV);
+            body.modelMatrix.get(bufferM);
+            glUniformMatrix4fv(projectionLoc, false, bufferP);
+            glUniformMatrix4fv(viewLoc, false, bufferV);
+            glUniformMatrix4fv(modelLoc, false, bufferM);
+        }
+
         glBindVertexArray(body.VAO);
 
+        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
         glDrawElements(GL_TRIANGLES, body.stacks * body.slices * 6, GL_UNSIGNED_INT, 0);
     }
     void CreateGraphicsPipeline(){
