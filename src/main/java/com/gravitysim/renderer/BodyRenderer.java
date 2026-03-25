@@ -19,22 +19,42 @@ public class BodyRenderer {
     int VAO = 0;
     int VBO = 0;
     int EBO = 0;
-    int n = 36;
+    int stacks = 32;
+    int slices = 32;
 
     void VertexSpecifications(){
-        double radius = 0.5;
-        float[] vertexPositions = new float[(n + 1) * 3];
-        int[] indices = new int[n * 3];
+        float[] vertexPositions = new float[(stacks + 1) * (slices + 1) * 3];
+        int[] indices = new int[stacks * slices * 6];
 
-        for(int i = 1; i <= n; i++){
-            double theta = i * (2 * PI / n);
-            vertexPositions[i*3] = (float)(radius * cos(theta));
-            vertexPositions[i*3+1] = (float)(radius * sin(theta));
-            vertexPositions[i*3+2] = 0;
+        int v = 0;
+        for(int i = 0; i <= stacks; i++){
+            double phi = i * (PI / stacks);
+            for(int j = 0; j <= slices; j++){
+                double theta = j * (2 * PI / slices);
+                vertexPositions[v++] = (float) (sin(phi) * cos(theta)); // x
+                vertexPositions[v++] = (float) (cos(phi));              // y
+                vertexPositions[v++] = (float) (sin(phi) * sin(theta)); // z
+            }
+        }
+        int index = 0;
 
-            indices[(i-1)*3] = 0;
-            indices[(i-1)*3+1] = i;
-            indices[(i-1)*3+2] = i == n ? 1 : i + 1;
+        for(int i = 0; i < stacks; i++){
+            for(int j = 0; j < slices; j++){
+                int A = i * (slices + 1) + j;
+                int B = (i + 1) * (slices + 1) + j;
+                int C = i * (slices + 1) + j + 1;
+                int D = (i + 1) * (slices + 1) + j + 1;
+
+                // Triangle 1
+                indices[index++] = A; 
+                indices[index++] = B; 
+                indices[index++] = C; 
+                
+                // Triangle 2
+                indices[index++] = B;
+                indices[index++] = C;
+                indices[index++] = D;
+            }
         }
 
         VAO = glGenVertexArrays();

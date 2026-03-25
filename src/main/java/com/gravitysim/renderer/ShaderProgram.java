@@ -19,10 +19,10 @@ public class ShaderProgram {
         return shaderObject;
         }
 
-    int CreateShaderProgram(String vs, String fs){
+    int CreateShaderProgram(String vertexSource, String fragmentSource){
         int programObject =  glCreateProgram();
-        int VertexShader = CompileShader(GL_VERTEX_SHADER, vs);
-        int FragmentShader = CompileShader(GL_FRAGMENT_SHADER, fs);
+        int VertexShader = CompileShader(GL_VERTEX_SHADER, vertexSource);
+        int FragmentShader = CompileShader(GL_FRAGMENT_SHADER, fragmentSource);
         glAttachShader(programObject, VertexShader);
         glAttachShader(programObject, FragmentShader);
         glLinkProgram(programObject);

@@ -115,7 +115,7 @@ public class Renderer{
 
         glBindVertexArray(body.VAO);
 
-        glDrawElements(GL_TRIANGLES, body.n * 3, GL_UNSIGNED_INT, 0);
+        glDrawElements(GL_TRIANGLES, body.stacks * body.slices * 6, GL_UNSIGNED_INT, 0);
     }
     void CreateGraphicsPipeline(){
         program = new ShaderProgram();
