@@ -48,7 +48,7 @@ src/main/java/
 mvn compile
 
 # Run
-mvn exec:java
+./run.sh
 ```
 
 ---
