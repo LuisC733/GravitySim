@@ -12,22 +12,32 @@ import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
 import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
 import static org.lwjgl.opengl.GL30.*;
 import org.joml.Matrix4f;
+import org.joml.Vector3f;
+
 import static java.lang.Math.PI;
 import static java.lang.Math.sin;
 import static java.lang.Math.cos;
 
 public class BodyRenderer {
+    Vector3f position;
+    float radius;
+    Matrix4f modelMatrix;
+
+    public BodyRenderer(Vector3f position, float radius){
+        this.position = position;
+        this.radius = radius;
+        this.modelMatrix = new Matrix4f().translation(position).scale(radius);
+    }
+    
     int VAO = 0;
     int VBO = 0;
     int EBO = 0;
     int stacks = 32;
     int slices = 32;
-    Matrix4f modelMatrix;
 
     void VertexSpecifications(){
         float[] vertexPositions = new float[((stacks + 1) * (slices + 1) * 3) * 2];
         int[] indices = new int[stacks * slices * 6];
-        modelMatrix = new Matrix4f().identity();
 
         int v = 0;
         for(int i = 0; i <= stacks; i++){

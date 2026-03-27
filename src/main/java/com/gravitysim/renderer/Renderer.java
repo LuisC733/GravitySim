@@ -8,6 +8,7 @@ import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.system.MemoryUtil.*;
 import java.nio.FloatBuffer;
+import java.util.ArrayList;
 import static org.lwjgl.opengl.GL30.glBindVertexArray;
 import static org.lwjgl.opengl.GL20.*;
 import org.lwjgl.opengl.GL;
@@ -25,6 +26,8 @@ public class Renderer{
     int lightPosLoc;
     int viewPosLoc;
     int lightColorLoc;
+
+    public ArrayList<BodyRenderer> bodies = new ArrayList<>();
 
     int height, width;
     private String title;
@@ -89,10 +92,8 @@ public class Renderer{
         height = h[0];
 
         GL.createCapabilities();
-        body = new BodyRenderer();
         camera = new Camera();
         camera.init();
-        System.out.println("width: " + Renderer.get().width + " height: " + Renderer.get().height);
         CreateGraphicsPipeline();
         modelLoc = glGetUniformLocation(GraphicsPipelineShaderP, "model");
         viewLoc = glGetUniformLocation(GraphicsPipelineShaderP, "view");
@@ -100,7 +101,9 @@ public class Renderer{
         lightPosLoc = glGetUniformLocation(GraphicsPipelineShaderP, "lightPos"); 
         viewPosLoc = glGetUniformLocation(GraphicsPipelineShaderP, "viewPos");
         lightColorLoc = glGetUniformLocation(GraphicsPipelineShaderP, "lightColor");
-        body.VertexSpecifications();
+        for(BodyRenderer body : bodies){
+            body.VertexSpecifications();
+        }
     }
     public void loop(){
         while(!glfwWindowShouldClose(glfwWindow)){
@@ -125,13 +128,10 @@ public class Renderer{
         try (MemoryStack stack = MemoryStack.stackPush()) {
             FloatBuffer bufferP = stack.mallocFloat(16);
             FloatBuffer bufferV = stack.mallocFloat(16);
-            FloatBuffer bufferM = stack.mallocFloat(16);
             camera.projectionMatrix.get(bufferP);
             camera.viewMatrix.get(bufferV);
-            body.modelMatrix.get(bufferM);
             glUniformMatrix4fv(projectionLoc, false, bufferP);
             glUniformMatrix4fv(viewLoc, false, bufferV);
-            glUniformMatrix4fv(modelLoc, false, bufferM);
         }
         try(MemoryStack stack = MemoryStack.stackPush()){
             FloatBuffer bufferLight = stack.mallocFloat(3);
@@ -145,10 +145,16 @@ public class Renderer{
             glUniform3fv(lightColorLoc, bufferColor);
         }
 
-        glBindVertexArray(body.VAO);
-
-        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-        glDrawElements(GL_TRIANGLES, body.stacks * body.slices * 6, GL_UNSIGNED_INT, 0);
+        for(BodyRenderer body : bodies){
+            try(MemoryStack stack = MemoryStack.stackPush()){
+                FloatBuffer bufferM = stack.mallocFloat(16);
+                body.modelMatrix.get(bufferM);
+                glUniformMatrix4fv(modelLoc, false, bufferM);
+            }
+            glBindVertexArray(body.VAO);
+            glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+            glDrawElements(GL_TRIANGLES, body.stacks * body.slices * 6, GL_UNSIGNED_INT, 0);
+        }
     }
     void CreateGraphicsPipeline(){
         program = new ShaderProgram();
