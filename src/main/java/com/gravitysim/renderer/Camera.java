@@ -12,6 +12,7 @@ public class Camera {
     Matrix4f viewMatrix = new Matrix4f();
     Matrix4f projectionMatrix = new Matrix4f();
     Vector3f frontVector;
+    Vector3f rightVector;
     Vector3f center = new Vector3f(0,0,0);
     Vector3f cameraPos = new Vector3f(0,3,15);
     Vector3f up = new Vector3f(0,1,0);
@@ -23,13 +24,15 @@ public class Camera {
         projectionMatrix.perspective((float)(Math.toRadians(45)), 
         (float) Renderer.get().width / (float) Renderer.get().height, 
         0.1f, 100.0f);
-        viewMatrix.lookAt(cameraPos, center, up);
     }
     void updateVectors(){
         frontVector = new Vector3f ((float)(cos(Math.toRadians(yaw)) * cos(Math.toRadians(pitch))), 
                                    (float)(sin(Math.toRadians(pitch))), 
                                    (float)(sin(Math.toRadians(yaw)) * cos(Math.toRadians(pitch)))).normalize();
+        rightVector = new Vector3f(frontVector).cross(up).normalize();
         center = new Vector3f(cameraPos).add(frontVector);
+        viewMatrix.identity().lookAt(cameraPos, center, up);
         viewMatrix.lookAt(cameraPos, center, up);
+        lightPos.set(cameraPos);
     }
 }

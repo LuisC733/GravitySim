@@ -1,5 +1,6 @@
 package com.gravitysim.renderer;
 
+import org.joml.Vector3f;
 import org.lwjgl.*;
 import org.lwjgl.glfw.*;
 import org.lwjgl.system.MemoryStack;
@@ -35,10 +36,17 @@ public class Renderer{
 
     private static Renderer window = null;
 
+    double lastX;
+    double lastY;
+    boolean firstMouse = true;
+    double time;
+
     private Renderer(){
-        this.height = 1280;
-        this.width = 800;
+        this.height = 800;
+        this.width = 1280;
         this.title = "N-Body Simulation";
+        this.lastX =  width / 2.0;
+        this.lastY = height / 2.0;
     }
 
     public static Renderer get(){
@@ -104,14 +112,63 @@ public class Renderer{
         for(BodyRenderer body : bodies){
             body.VertexSpecifications();
         }
+        glfwSetInputMode(glfwWindow, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+        camera.updateVectors();
+        glfwSetCursorPosCallback(glfwWindow, (window, xPos, yPos) -> {
+            if(firstMouse){
+                lastX = xPos;
+                lastY = yPos;
+                firstMouse = false;
+                return;
+            }
+            double deltaX = xPos - lastX;
+            double deltaY = lastY - yPos;
+
+            float sensitivity = 0.05f;
+
+            camera.yaw += deltaX * sensitivity;
+            camera.pitch += deltaY * sensitivity;
+
+            if(camera.pitch > 89.0f) camera.pitch = 89.0f;
+            if(camera.pitch < -89.0f) camera.pitch = -89.0f;
+
+            camera.updateVectors();
+            lastX = xPos;
+            lastY = yPos;
+        });
     }
     public void loop(){
+        time = glfwGetTime();
         while(!glfwWindowShouldClose(glfwWindow)){
             glfwPollEvents();
 
             glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+            float speed = 5.0f;
+            double deltaTime = glfwGetTime() - time;
+            time = glfwGetTime();
+
+            if(glfwGetKey(glfwWindow, GLFW_KEY_W) == GLFW_PRESS){
+                float factor = (float) (speed * deltaTime);
+                camera.cameraPos.add(new Vector3f(camera.frontVector).mul(factor));
+                camera.updateVectors();
+            }
+            if(glfwGetKey(glfwWindow, GLFW_KEY_S) == GLFW_PRESS){
+                float factor = (float) (speed * deltaTime);
+                camera.cameraPos.sub(new Vector3f(camera.frontVector).mul(factor));
+                camera.updateVectors();
+            }
+            if(glfwGetKey(glfwWindow, GLFW_KEY_D) == GLFW_PRESS){
+                float factor = (float) (speed * deltaTime);
+                camera.cameraPos.add(new Vector3f(camera.rightVector).mul(factor));
+                camera.updateVectors();
+            }
+            if(glfwGetKey(glfwWindow, GLFW_KEY_A) == GLFW_PRESS){
+                float factor = (float) (speed * deltaTime);
+                camera.cameraPos.sub(new Vector3f(camera.rightVector).mul(factor));
+                camera.updateVectors();
+            }
             Draw();
 
             glfwSwapBuffers(glfwWindow);
