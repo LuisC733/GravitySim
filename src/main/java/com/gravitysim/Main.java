@@ -1,8 +1,6 @@
 package com.gravitysim;
 
 import org.joml.Vector3f;
-import com.gravitysim.core.*;
-import com.gravitysim.physics.*;
 import com.gravitysim.renderer.*;
 
 class Main{

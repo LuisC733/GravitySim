@@ -48,12 +48,12 @@ public class Renderer {
     // Shader
     private ShaderProgram shaderProgram;
     private int shaderProgramId;
-    private int uModel;
-    private int uView;
-    private int uProjection;
-    private int uLightPos;
-    private int uViewPos;
-    private int uLightColor;
+    private int LocModel;
+    private int LocView;
+    private int LocProjection;
+    private int LocLightPos;
+    private int LocViewPos;
+    private int LocLightColor;
 
     
     // mouse movement 
@@ -132,12 +132,12 @@ public class Renderer {
 
     // Locations
     private void initUniforms() {
-        uModel      = glGetUniformLocation(shaderProgramId, "model");
-        uView       = glGetUniformLocation(shaderProgramId, "view");
-        uProjection = glGetUniformLocation(shaderProgramId, "projection");
-        uLightPos   = glGetUniformLocation(shaderProgramId, "lightPos");
-        uViewPos    = glGetUniformLocation(shaderProgramId, "viewPos");
-        uLightColor = glGetUniformLocation(shaderProgramId, "lightColor");
+        LocModel      = glGetUniformLocation(shaderProgramId, "model");
+        LocView       = glGetUniformLocation(shaderProgramId, "view");
+        LocProjection = glGetUniformLocation(shaderProgramId, "projection");
+        LocLightPos   = glGetUniformLocation(shaderProgramId, "lightPos");
+        LocViewPos    = glGetUniformLocation(shaderProgramId, "viewPos");
+        LocLightColor = glGetUniformLocation(shaderProgramId, "lightColor");
     }
 
     // Upload vertices
@@ -240,8 +240,8 @@ public class Renderer {
             FloatBuffer view       = stack.mallocFloat(16);
             camera.projectionMatrix.get(projection);
             camera.viewMatrix.get(view);
-            glUniformMatrix4fv(uProjection, false, projection);
-            glUniformMatrix4fv(uView,       false, view);
+            glUniformMatrix4fv(LocProjection, false, projection);
+            glUniformMatrix4fv(LocView,       false, view);
         }
 
         try (MemoryStack stack = MemoryStack.stackPush()) {
@@ -251,9 +251,9 @@ public class Renderer {
             camera.lightPos.get(lightPos);
             camera.cameraPos.get(viewPos);
             camera.lightColor.get(lightColor);
-            glUniform3fv(uLightPos,   lightPos);
-            glUniform3fv(uViewPos,    viewPos);
-            glUniform3fv(uLightColor, lightColor);
+            glUniform3fv(LocLightPos,   lightPos);
+            glUniform3fv(LocViewPos,    viewPos);
+            glUniform3fv(LocLightColor, lightColor);
         }
     }
 
@@ -261,7 +261,7 @@ public class Renderer {
         try (MemoryStack stack = MemoryStack.stackPush()) {
             FloatBuffer model = stack.mallocFloat(16);
             body.modelMatrix.get(model);
-            glUniformMatrix4fv(uModel, false, model);
+            glUniformMatrix4fv(LocModel, false, model);
         }
     }
 

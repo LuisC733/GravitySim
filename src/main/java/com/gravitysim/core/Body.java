@@ -1,34 +1,34 @@
 package com.gravitysim.core;
 
 public class Body{
-    public Vector3D pos;
-    public Vector3D velo;
-    public Vector3D accl;
+    public Vector3D position;
+    public Vector3D velocity;
+    public Vector3D acceleration;
     public final double mass;
     public double radius;
 
-    public Body(Vector3D pos, Vector3D velo, double mass, double radius){
-        this.pos = pos;
-        this.velo = velo;
+    public Body(Vector3D position, Vector3D velocity, double mass, double radius){
+        this.position = position;
+        this.velocity = velocity;
         this.mass = mass;
         this.radius = radius;
-        this.accl = new Vector3D(0,0,0);
+        this.acceleration = new Vector3D(0,0,0);
     }
-    void accleration(Vector3D f){  
-        this.accl = f.scale(1.0/mass);
+    void acceleration(Vector3D f){  
+        this.acceleration = f.scale(1.0/mass);
     }
 
-    void setPos(Vector3D pos){
-        this.pos = pos;
+    void setPos(Vector3D position){
+        this.position = position;
     }
-    public Vector3D getPos(){
-        return pos;
+    public Vector3D getPosition(){
+        return position;
     }
-    void setVelo(Vector3D velo){
-        this.velo = velo;
+    void setVelo(Vector3D velocity){
+        this.velocity = velocity;
     }
     Vector3D getVelo(){
-        return velo;
+        return velocity;
     }
     public double getRadius(){
         return radius;
