@@ -8,7 +8,7 @@ import java.nio.file.Paths;
 
 public class ShaderProgram {
 
-    int CompileShader(int type, String sourceCode){
+    int compileShader(int type, String sourceCode){
         int shaderObject = 0;
         if(type == GL_VERTEX_SHADER){
             shaderObject = glCreateShader(GL_VERTEX_SHADER);
@@ -23,10 +23,10 @@ public class ShaderProgram {
         return shaderObject;
         }
 
-    int CreateShaderProgram(String vertexSource, String fragmentSource){
+    int createShaderProgram(String vertexSource, String fragmentSource){
         int programObject =  glCreateProgram();
-        int VertexShader = CompileShader(GL_VERTEX_SHADER, vertexSource);
-        int FragmentShader = CompileShader(GL_FRAGMENT_SHADER, fragmentSource);
+        int VertexShader = compileShader(GL_VERTEX_SHADER, vertexSource);
+        int FragmentShader = compileShader(GL_FRAGMENT_SHADER, fragmentSource);
         glAttachShader(programObject, VertexShader);
         glAttachShader(programObject, FragmentShader);
         glLinkProgram(programObject);
