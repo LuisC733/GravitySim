@@ -60,7 +60,7 @@ public class Renderer {
     private double mouseLastY;
     private boolean mouseFirstMove = true;
     private static final float mouseSensitivity = 0.05f;
-    private static final float cameraSpeed = 5.0f;
+    private static final float cameraSpeed = 10.0f;
 
     public void init() {
         initGlfw();
