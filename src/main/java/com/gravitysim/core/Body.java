@@ -5,7 +5,7 @@ public class Body{
     public Vector3D velocity;
     public Vector3D acceleration;
     public final double mass;
-    public double radius;
+    public final double radius;
 
     public Body(Vector3D position, Vector3D velocity, double mass, double radius){
         this.position = position;
@@ -16,21 +16,5 @@ public class Body{
     }
     void acceleration(Vector3D f){  
         this.acceleration = f.scale(1.0/mass);
-    }
-
-    void setPos(Vector3D position){
-        this.position = position;
-    }
-    public Vector3D getPosition(){
-        return position;
-    }
-    void setVelo(Vector3D velocity){
-        this.velocity = velocity;
-    }
-    Vector3D getVelo(){
-        return velocity;
-    }
-    public double getRadius(){
-        return radius;
     }
 }

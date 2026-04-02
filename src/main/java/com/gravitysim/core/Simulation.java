@@ -13,11 +13,10 @@ public class Simulation{
 
     public void initSim(){
         accumulateForces();
-        int i = 0;
-        for(Body body : bodies){
+        for(int i = 0; i < bodies.size(); i++){
+            Body body = bodies.get(i);
             body.acceleration = listOfForce.get(i).scale(1.0 / body.mass);
             body.velocity = body.velocity.sub(body.acceleration.scale(0.5 * dt));
-            i++;
         }
     }
     private void accumulateForces(){
@@ -50,7 +49,7 @@ public class Simulation{
             Body body = bodies.get(i);
             body.velocity = body.velocity.add(body.acceleration.scale(dt));
             body.position = body.position.add(body.velocity.scale(dt));
-            body.acceleration = listOfForce.get(i).scale(1.0 / body.mass);
+            body.acceleration(listOfForce.get(i));
         }
     }
 }
