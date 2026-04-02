@@ -7,7 +7,7 @@ public class Simulation{
 
     public ArrayList<Body> bodies = new ArrayList<>();
     public ArrayList<Vector3D> listOfForce = new ArrayList<>();
-    double dt = 0.0001;
+    double dt = 3600;
 
     public void initSim(){
         accumulateForces();

@@ -1,5 +1,6 @@
 package com.gravitysim.renderer;
 
+import static org.lwjgl.opengl.GL11.GL_FALSE;
 import static org.lwjgl.opengl.GL20.*;
 
 import java.io.IOException;
@@ -20,6 +21,11 @@ public class ShaderProgram {
         glShaderSource(shaderObject, sourceCode);
         glCompileShader(shaderObject);
 
+        if (glGetShaderi(shaderObject, GL_COMPILE_STATUS) == GL_FALSE) {
+            String log = glGetShaderInfoLog(shaderObject);
+            throw new RuntimeException("Shader compile error:\n" + log);
+        }
+
         return shaderObject;
         }
 
@@ -31,8 +37,12 @@ public class ShaderProgram {
         glAttachShader(programObject, FragmentShader);
         glLinkProgram(programObject);
 
+        if (glGetProgrami(programObject, GL_LINK_STATUS) == GL_FALSE) {
+            String log = glGetProgramInfoLog(programObject);
+            throw new RuntimeException("Shader link error:\n" + log);
+        }
+        
         glValidateProgram(programObject);
-
         return programObject;
     }
     String loadShader(String path) {

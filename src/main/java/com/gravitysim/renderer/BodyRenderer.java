@@ -21,7 +21,7 @@ import static java.lang.Math.cos;
 public class BodyRenderer {
     Vector3f position;
     float radius;
-    Matrix4f modelMatrix;
+    public Matrix4f modelMatrix;
 
     public BodyRenderer(Vector3f position, float radius){
         this.position = position;
@@ -95,5 +95,6 @@ public class BodyRenderer {
         modelMatrix.identity();
         Vector3f position = new Vector3f(x,y,z);
         modelMatrix.translation(position);
+        modelMatrix.scale(radius);
     }
 }
