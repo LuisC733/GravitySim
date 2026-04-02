@@ -5,11 +5,9 @@ import com.gravitysim.physics.Gravity;
 
 public class Simulation{
 
-    // TODO -> Collision Detection
-
     public ArrayList<Body> bodies = new ArrayList<>();
     public ArrayList<Vector3D> listOfForce = new ArrayList<>();
-    double dt = 10.0;
+    double dt = 0.0001;
 
     public void initSim(){
         accumulateForces();

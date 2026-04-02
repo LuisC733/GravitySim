@@ -1,7 +1,6 @@
 package com.gravitysim.renderer;
 
 import org.joml.Vector3f;
-import org.lwjgl.*;
 import org.lwjgl.glfw.*;
 import org.lwjgl.system.MemoryStack;
 import static org.lwjgl.glfw.Callbacks.*;
@@ -38,7 +37,7 @@ public class Renderer {
     int width;
     int height;
     private String title;
-    private long glfwWindow;
+    public long glfwWindow;
 
     
     public ArrayList<BodyRenderer> bodies = new ArrayList<>();
@@ -61,18 +60,9 @@ public class Renderer {
     private double mouseLastY;
     private boolean mouseFirstMove = true;
     private static final float mouseSensitivity = 0.05f;
-    private double lastFrameTime;
     private static final float cameraSpeed = 5.0f;
 
-    public void run() {
-        System.out.println("N-Body Simulation " + Version.getVersion());
-
-        init();
-        loop();
-        cleanup();
-    }
-
-    private void init() {
+    public void init() {
         initGlfw();
         initOpenGL();
         initCamera();
@@ -173,15 +163,7 @@ public class Renderer {
             mouseLastY = yPos;
         });
     }
-
-    private void loop() {
-        lastFrameTime = glfwGetTime();
-
-        while (!glfwWindowShouldClose(glfwWindow)) {
-            double now       = glfwGetTime();
-            float  deltaTime = (float) (now - lastFrameTime);
-            lastFrameTime    = now;
-
+    public void drawFrame(float deltaTime){
             glfwPollEvents();
             processCameraInput(deltaTime);
 
@@ -191,8 +173,8 @@ public class Renderer {
             draw();
 
             glfwSwapBuffers(glfwWindow);
-        }
     }
+
     private void processCameraInput(float deltaTime) {
         float step = cameraSpeed * deltaTime;
 
@@ -265,7 +247,7 @@ public class Renderer {
         }
     }
 
-    private void cleanup() {
+    public void cleanup() {
         glfwFreeCallbacks(glfwWindow);
         glfwDestroyWindow(glfwWindow);
         glfwTerminate();

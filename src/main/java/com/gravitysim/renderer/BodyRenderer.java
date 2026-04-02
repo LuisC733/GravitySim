@@ -91,4 +91,9 @@ public class BodyRenderer {
         glBindVertexArray(0);
         glDisableVertexAttribArray(0);
     }
+    public void setPosition(float x, float y, float z){
+        modelMatrix.identity();
+        Vector3f position = new Vector3f(x,y,z);
+        modelMatrix.translation(position);
+    }
 }
