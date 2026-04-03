@@ -27,7 +27,7 @@ src/main/java/com/gravitysim/
     ├── Renderer.java            # Coordinator / Singleton — owns the render loop
     ├── BodyRenderer.java        # VAO/VBO/EBO, sphere mesh, model matrix per body
     ├── ShaderProgram.java       # GLSL compilation and linking
-    ├── SpacetimeGridRenderer.java  # Deformable XZ-plane grid (gravitational potential)
+    ├── SpacetimeGrid.java       # Deformable XZ-plane grid (gravitational potential)
     └── Camera.java              # View and projection matrices
 ```
 

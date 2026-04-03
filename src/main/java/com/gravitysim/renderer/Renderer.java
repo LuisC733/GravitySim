@@ -3,6 +3,9 @@ package com.gravitysim.renderer;
 import org.joml.Vector3f;
 import org.lwjgl.glfw.*;
 import org.lwjgl.system.MemoryStack;
+
+import com.gravitysim.core.Body;
+
 import static org.lwjgl.glfw.Callbacks.*;
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
@@ -41,11 +44,13 @@ public class Renderer {
 
     
     public ArrayList<BodyRenderer> bodies = new ArrayList<>();
+    public ArrayList<Body> physicsBodies = new ArrayList<>();
     private Camera camera;
 
     
     // Shader
     private ShaderProgram shaderProgram;
+    private SpacetimeGrid spacetimeGrid;
     private int shaderProgramId;
     private int LocModel;
     private int LocView;
@@ -61,7 +66,7 @@ public class Renderer {
     private double mouseLastY;
     private boolean mouseFirstMove = true;
     private static final float mouseSensitivity = 0.05f;
-    private static final float cameraSpeed = 10.0f;
+    private static final float cameraSpeed = 20.0f;
 
     public void init() {
         initGlfw();
@@ -70,6 +75,7 @@ public class Renderer {
         initShaderPipeline();
         initUniforms();
         initBodies();
+        initGrid();
         initCallbacks();
     }
 
@@ -215,6 +221,8 @@ public class Renderer {
             glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
             glDrawElements(GL_TRIANGLES, body.stacks * body.slices * 6, GL_UNSIGNED_INT, 0);
         }
+        spacetimeGrid.updateGrid(physicsBodies);
+        spacetimeGrid.render(camera.viewMatrix, camera.projectionMatrix);
     }
 
     private void uploadCameraUniforms() {
@@ -247,7 +255,10 @@ public class Renderer {
             glUniformMatrix4fv(LocModel, false, model);
             glUniform3f(LocBodyColor, body.bodyColor.x, body.bodyColor.y, body.bodyColor.z);
         }
-
+    }
+    private void initGrid() {
+        spacetimeGrid = new SpacetimeGrid();
+        spacetimeGrid.initSTG();
     }
 
     public void cleanup() {

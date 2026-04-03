@@ -46,6 +46,7 @@ public class Main{
         for (SimBody sb : bodies) {
             sim.bodies.add(sb.body);
             Renderer.get().bodies.add(sb.renderer);
+            Renderer.get().physicsBodies.add(sb.body);
         }
 
         sim.initSim();

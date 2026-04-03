@@ -53,6 +53,6 @@ public class ShaderProgram {
         throw new RuntimeException("Shader not found: " + path, e);
     }
 }
-    String vertexShader = loadShader("src/main/resources/shaders/vertexshader.glsl");
-    String fragShader = loadShader("src/main/resources/shaders/fragmentshader.glsl");
+    String vertexShader = loadShader("src/main/resources/shaders/vertexSphere.glsl");
+    String fragShader = loadShader("src/main/resources/shaders/fragSphere.glsl");
 }
