@@ -13,7 +13,6 @@ import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
 import static org.lwjgl.opengl.GL30.*;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
-
 import static java.lang.Math.PI;
 import static java.lang.Math.sin;
 import static java.lang.Math.cos;
@@ -22,10 +21,12 @@ public class BodyRenderer {
     Vector3f position;
     float radius;
     public Matrix4f modelMatrix;
+    Vector3f bodyColor;
 
-    public BodyRenderer(Vector3f position, float radius){
+    public BodyRenderer(Vector3f position, float radius, Vector3f bodyColor){
         this.position = position;
         this.radius = radius;
+        this.bodyColor = bodyColor;
         this.modelMatrix = new Matrix4f().translation(position).scale(radius);
     }
     

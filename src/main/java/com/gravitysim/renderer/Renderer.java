@@ -53,6 +53,7 @@ public class Renderer {
     private int LocLightPos;
     private int LocViewPos;
     private int LocLightColor;
+    private int LocBodyColor;
 
     
     // mouse movement 
@@ -116,8 +117,7 @@ public class Renderer {
 
     private void initShaderPipeline() {
         shaderProgram   = new ShaderProgram();
-        shaderProgramId = shaderProgram.createShaderProgram(
-                shaderProgram.vertexShader, shaderProgram.fragShader);
+        shaderProgramId = shaderProgram.createShaderProgram(shaderProgram.vertexShader, shaderProgram.fragShader);
     }
 
     // Locations
@@ -128,6 +128,7 @@ public class Renderer {
         LocLightPos   = glGetUniformLocation(shaderProgramId, "lightPos");
         LocViewPos    = glGetUniformLocation(shaderProgramId, "viewPos");
         LocLightColor = glGetUniformLocation(shaderProgramId, "lightColor");
+        LocBodyColor  = glGetUniformLocation(shaderProgramId, "bodyColor");
     }
 
     // Upload vertices
@@ -244,7 +245,9 @@ public class Renderer {
             FloatBuffer model = stack.mallocFloat(16);
             body.modelMatrix.get(model);
             glUniformMatrix4fv(LocModel, false, model);
+            glUniform3f(LocBodyColor, body.bodyColor.x, body.bodyColor.y, body.bodyColor.z);
         }
+
     }
 
     public void cleanup() {
