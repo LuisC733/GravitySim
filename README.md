@@ -1,5 +1,7 @@
 # N-Body Gravitational Simulation
 
+![Simulation Preview](assets/preview.png)
+
 A 3D gravitational simulation written in Java, built as a self-directed learning project to explore Newtonian mechanics, numerical integration, 3D rendering and OpenGL.
 
 ---

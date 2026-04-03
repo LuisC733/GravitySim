@@ -17,7 +17,7 @@ public class Main{
 
         // sun
         bodies.add(new SimBody(new Body(new Vector3D(0,0,0), new Vector3D(0,0,0), 1.989e30, 5), 
-                               new BodyRenderer(new Vector3f(0,0,0), 5.0f, new Vector3f(1.0f, 0.95f, 0.3f))));
+                               new BodyRenderer(new Vector3f(0,0,0), 5.0f, new Vector3f(1.0f, 1.0f, 1.0f))));
         // mercury
         bodies.add(new SimBody(new Body(new Vector3D(5.79e10,0,0), new Vector3D(0,0,47400), 3.285e23, 0.5),
                                new BodyRenderer(new Vector3f(5.79e10f,0,0), 0.5f, new Vector3f(0.7f, 0.65f, 0.6f))));
