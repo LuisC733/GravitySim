@@ -2,6 +2,7 @@ package com.gravitysim.core;
 
 import java.util.ArrayList;
 import com.gravitysim.physics.Gravity;
+import com.gravitysim.physics.Body;
 
 public class Simulation{
 

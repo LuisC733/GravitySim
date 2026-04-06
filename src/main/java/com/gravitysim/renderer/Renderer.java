@@ -3,9 +3,7 @@ package com.gravitysim.renderer;
 import org.joml.Vector3f;
 import org.lwjgl.glfw.*;
 import org.lwjgl.system.MemoryStack;
-
-import com.gravitysim.core.Body;
-
+import com.gravitysim.physics.Body;
 import static org.lwjgl.glfw.Callbacks.*;
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;

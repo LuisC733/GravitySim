@@ -23,7 +23,7 @@ import org.joml.Matrix4f;
 import org.lwjgl.system.MemoryUtil;
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
-import com.gravitysim.core.Body;
+import com.gravitysim.physics.Body;
 import static java.lang.Math.sqrt;
 import static java.lang.Math.log;
 

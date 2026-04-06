@@ -19,13 +19,15 @@ The simulation is rendered in real time via **OpenGL (Core Profile 3.3)** using 
 ```
 src/main/java/com/gravitysim/
 ├── core/
-│   ├── Body.java           # Data: position, velocity, acceleration, mass, radius
+|   |── Octree              # coming soon
 │   ├── SimBody.java        # Pairs a Body with its BodyRenderer
 │   ├── Simulation.java     # Main loop: applies forces and integrates motion
 │   └── Vector3D.java       # Immutable 3D vector math
 ├── physics/
+|   ├── Body.java           # Data: position, velocity, acceleration, mass, radius
 │   └── Gravity.java        # Pairwise gravitational force (Newton's law)
 └── renderer/
+    ├── ParticleRenderer.java    # coming soon
     ├── Renderer.java            # Coordinator / Singleton — owns the render loop
     ├── BodyRenderer.java        # VAO/VBO/EBO, sphere mesh, model matrix per body
     ├── ShaderProgram.java       # GLSL compilation and linking

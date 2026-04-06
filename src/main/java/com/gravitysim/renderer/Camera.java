@@ -14,7 +14,7 @@ public class Camera {
     Vector3f frontVector;
     Vector3f rightVector;
     Vector3f center = new Vector3f(0,0,0);
-    Vector3f cameraPos = new Vector3f(20, 15, 5);
+    Vector3f cameraPos = new Vector3f(-30, 30, 30);
     Vector3f up = new Vector3f(0,1,0);
     Vector3f lightPos = new Vector3f(0, 0, 0);
     Vector3f lightColor = new Vector3f(1,1,1);

@@ -2,13 +2,22 @@ package com.gravitysim;
 
 import static org.lwjgl.glfw.GLFW.*;
 import java.util.ArrayList;
-
 import org.joml.Vector3f;
-
 import com.gravitysim.core.*;
 import com.gravitysim.renderer.*;
+import com.gravitysim.physics.*;
 
 public class Main{
+    // TODO
+    // Barnes-Hut Algorithm
+    // Roche-Limit
+    // Collision Detection
+    // adaptive timesteps
+    // I/O Stream of Objects
+    // fixing Leapfrog
+    // improving Spacetime Grid & Light
+    // Particle Rendering
+
     public static void main(String[] args){
         Simulation sim = new Simulation();
         Renderer renderer = Renderer.get();

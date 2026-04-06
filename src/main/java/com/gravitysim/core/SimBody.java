@@ -1,6 +1,7 @@
 package com.gravitysim.core;
 
 import com.gravitysim.renderer.BodyRenderer;
+import com.gravitysim.physics.Body;
 
 public class SimBody {
     public Body body;
