@@ -5,8 +5,8 @@
          http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.gravitysim</groupId>
-    <artifactId>gravitysim</artifactId>
+    <groupId>com.nbodysim</groupId>
+    <artifactId>nbodysim</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <properties>
@@ -83,7 +83,7 @@
         		<execution>
             		<id>default-cli</id>
             		<configuration>
-                		<mainClass>com.gravitysim.Main</mainClass>
+                		<mainClass>com.nbodysim.Main</mainClass>
                 		<jvmArgs>
                     		<jvmArg>-XstartOnFirstThread</jvmArg>
                 		</jvmArgs>

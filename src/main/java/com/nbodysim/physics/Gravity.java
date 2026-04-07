@@ -1,6 +1,6 @@
-package com.gravitysim.physics;
+package com.nbodysim.physics;
 
-import com.gravitysim.core.Vector3D;
+import com.nbodysim.core.Vector3D;
 
 public class Gravity{
     private final double G = 6.674e-11;

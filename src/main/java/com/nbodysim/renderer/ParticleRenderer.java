@@ -1,4 +1,4 @@
-package com.gravitysim.renderer;
+package com.nbodysim.renderer;
 
 public class ParticleRenderer {
     

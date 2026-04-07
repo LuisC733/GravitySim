@@ -1,4 +1,4 @@
-package com.gravitysim.renderer;
+package com.nbodysim.renderer;
 
 import org.joml.Matrix4f;
 import org.joml.Vector3f;

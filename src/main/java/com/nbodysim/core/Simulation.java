@@ -1,8 +1,9 @@
-package com.gravitysim.core;
+package com.nbodysim.core;
 
 import java.util.ArrayList;
-import com.gravitysim.physics.Gravity;
-import com.gravitysim.physics.Body;
+
+import com.nbodysim.physics.Body;
+import com.nbodysim.physics.Gravity;
 
 public class Simulation{
 

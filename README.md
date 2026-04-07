@@ -17,7 +17,7 @@ The simulation is rendered in real time via **OpenGL (Core Profile 3.3)** using 
 ## Architecture
 
 ```
-src/main/java/com/gravitysim/
+src/main/java/com/nbodysim/
 ├── core/
 |   |── Octree              # coming soon
 │   ├── SimBody.java        # Pairs a Body with its BodyRenderer

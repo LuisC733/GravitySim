@@ -1,9 +1,11 @@
-package com.gravitysim.renderer;
+package com.nbodysim.renderer;
 
 import org.joml.Vector3f;
 import org.lwjgl.glfw.*;
 import org.lwjgl.system.MemoryStack;
-import com.gravitysim.physics.Body;
+
+import com.nbodysim.physics.Body;
+
 import static org.lwjgl.glfw.Callbacks.*;
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;

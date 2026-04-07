@@ -1,4 +1,4 @@
-package com.gravitysim.renderer;
+package com.nbodysim.renderer;
 
 import static org.lwjgl.opengl.GL11.GL_FALSE;
 import static org.lwjgl.opengl.GL20.*;

@@ -1,4 +1,4 @@
-package com.gravitysim.renderer;
+package com.nbodysim.renderer;
 
 import static org.lwjgl.opengl.GL11.GL_FLOAT;
 import static org.lwjgl.opengl.GL11.GL_LINES;
@@ -21,9 +21,12 @@ import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
 import static org.lwjgl.opengl.GL30.*;
 import org.joml.Matrix4f;
 import org.lwjgl.system.MemoryUtil;
+
+import com.nbodysim.physics.Body;
+
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
-import com.gravitysim.physics.Body;
+
 import static java.lang.Math.sqrt;
 import static java.lang.Math.log;
 

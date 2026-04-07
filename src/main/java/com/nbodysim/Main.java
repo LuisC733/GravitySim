@@ -1,11 +1,11 @@
-package com.gravitysim;
+package com.nbodysim;
 
 import static org.lwjgl.glfw.GLFW.*;
 import java.util.ArrayList;
 import org.joml.Vector3f;
-import com.gravitysim.core.*;
-import com.gravitysim.renderer.*;
-import com.gravitysim.physics.*;
+import com.nbodysim.core.*;
+import com.nbodysim.physics.*;
+import com.nbodysim.renderer.*;
 
 public class Main{
     // TODO
