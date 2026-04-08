@@ -3,6 +3,7 @@ package com.nbodysim.core;
 import com.nbodysim.physics.*;
 
 class Octree {
+    Gravity g = new Gravity();
     class Node{
         Vector3D center;
         double halfWidth;
@@ -82,27 +83,27 @@ class Octree {
         node.updateDistributionMass(newBody);
     }
     Vector3D traverse(Node node, Body body){
-        Gravity g = new Gravity();
         Vector3D sumOfForce = new Vector3D(0,0,0);
-        
-        if(node.body == null){
+        if(node.body == body){
             return new Vector3D(0, 0, 0);
         }
         else if(node.body != null && node.isLeaf()){
-            return g.calculateForce(node.body, body);
+            return g.calculateForce(body, node.body);
         }
         else if(node.body == null && !node.isLeaf()){
             double width = node.halfWidth * 2;
             double distance = (node.centerOfMass.sub(body.position)).magnitude();
-            double theta = 1.0;
+            double theta = 0.5;
 
             if(width / distance < theta){
                 Body dummy = new Body(node.centerOfMass, new Vector3D(0,0,0), node.totalMass, 0);
-                return g.calculateForce(dummy, body);
+                return g.calculateForce(body, dummy);
             }
             else{
                 for(int i = 0; i < node.children.length; i++){
-                    sumOfForce.add(traverse(node.children[i], body));
+                    if(node.children[i] != null){
+                        sumOfForce = sumOfForce.add(traverse(node.children[i], body));
+                    }
                 }
             }
         }

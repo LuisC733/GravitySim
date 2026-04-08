@@ -8,7 +8,7 @@ public class Simulation{
     public ArrayList<Body> bodies = new ArrayList<>();
     public ArrayList<Vector3D> listOfForce = new ArrayList<>();
     Octree octree = new Octree();
-    Octree.Node root = octree.new Node(new Vector3D(0, 0, 0), 4000);
+    Octree.Node root = octree.new Node(new Vector3D(0, 0, 0), 0);
     double dt = 3600;
 
     public void initSim(){
@@ -21,7 +21,13 @@ public class Simulation{
     }
     private void accumulateForces(){
         int length = bodies.size();
-        root = octree.new Node(new Vector3D(0, 0, 0), 4000);
+        double halfWidth = 0;
+        for(Body b : bodies){
+            halfWidth = Math.max(halfWidth, Math.abs(b.position.x));
+            halfWidth = Math.max(halfWidth, Math.abs(b.position.y));
+            halfWidth = Math.max(halfWidth, Math.abs(b.position.z));
+        }
+        root = octree.new Node(new Vector3D(0, 0, 0), halfWidth * 1.1);
         
         if(listOfForce.size() == 0){
             for(int i = 0; i < length; i++){
@@ -41,12 +47,16 @@ public class Simulation{
         }
     }
     public void updatePos(){
+        for(int i = 0; i < bodies.size(); i++){
+            Body body = bodies.get(i);
+            body.velocity = body.velocity.add(body.acceleration.scale(dt * 0.5));
+            body.position = body.position.add(body.velocity.scale(dt));        
+        }
         accumulateForces();
         for(int i = 0; i < bodies.size(); i++){
             Body body = bodies.get(i);
-            body.velocity = body.velocity.add(body.acceleration.scale(dt));
-            body.position = body.position.add(body.velocity.scale(dt));
-            body.acceleration(listOfForce.get(i));
+            body.acceleration = listOfForce.get(i).scale(1.0 / body.mass);
+            body.velocity = body.velocity.add(body.acceleration.scale(0.5 * dt));
         }
     }
 }
