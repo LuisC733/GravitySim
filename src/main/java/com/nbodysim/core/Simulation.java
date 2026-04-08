@@ -1,14 +1,14 @@
 package com.nbodysim.core;
 
 import java.util.ArrayList;
-
 import com.nbodysim.physics.Body;
-import com.nbodysim.physics.Gravity;
 
 public class Simulation{
 
     public ArrayList<Body> bodies = new ArrayList<>();
     public ArrayList<Vector3D> listOfForce = new ArrayList<>();
+    Octree octree = new Octree();
+    Octree.Node root = octree.new Node(new Vector3D(0, 0, 0), 4000);
     double dt = 3600;
 
     public void initSim(){
@@ -20,9 +20,9 @@ public class Simulation{
         }
     }
     private void accumulateForces(){
-        Gravity g = new Gravity();
         int length = bodies.size();
-
+        root = octree.new Node(new Vector3D(0, 0, 0), 4000);
+        
         if(listOfForce.size() == 0){
             for(int i = 0; i < length; i++){
                 listOfForce.add(new Vector3D(0, 0, 0));
@@ -33,14 +33,11 @@ public class Simulation{
                 listOfForce.set(i, new Vector3D(0, 0, 0));
             }
         }
+        for(Body body : bodies){
+            octree.insert(root, body);
+        }
         for(int i = 0; i < length; i++){
-            for(int j = i + 1; j < length; j++){
-                Vector3D force = g.calculateForce(bodies.get(i), bodies.get(j));
-                Vector3D invertedForce = force.invert();
-
-                listOfForce.set(i, listOfForce.get(i).add(force));
-                listOfForce.set(j, listOfForce.get(j).add(invertedForce));
-            }
+            listOfForce.set(i, (octree.traverse(root, bodies.get(i))));
         }
     }
     public void updatePos(){
