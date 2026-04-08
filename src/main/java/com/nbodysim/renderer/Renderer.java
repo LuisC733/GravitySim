@@ -1,11 +1,9 @@
 package com.nbodysim.renderer;
 
+import com.nbodysim.physics.Body;
 import org.joml.Vector3f;
 import org.lwjgl.glfw.*;
 import org.lwjgl.system.MemoryStack;
-
-import com.nbodysim.physics.Body;
-
 import static org.lwjgl.glfw.Callbacks.*;
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;

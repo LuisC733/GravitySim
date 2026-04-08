@@ -21,14 +21,12 @@ import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
 import static org.lwjgl.opengl.GL30.*;
 import org.joml.Matrix4f;
 import org.lwjgl.system.MemoryUtil;
-
 import com.nbodysim.physics.Body;
-
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
-
 import static java.lang.Math.sqrt;
 import static java.lang.Math.log;
+import com.nbodysim.Config;
 
 public class SpacetimeGrid {
     int gridShaderProgram;
@@ -109,7 +107,6 @@ public class SpacetimeGrid {
         float x, z;
         float G_VISUAL = 1.0f;
         float epsilon = 10.0f;
-        double SCALE = 1e10;
 
         for(int i = 0; i < N; i++){
             for(int j = 0; j < N; j++){
@@ -120,8 +117,8 @@ public class SpacetimeGrid {
                 float ySum = 0;
 
                 for(Body body : bodies){
-                    float dx = (float) (x - body.position.x / SCALE);
-                    float dz = (float) (z - body.position.z / SCALE);
+                    float dx = (float) (x - body.position.x / Config.SCALE);
+                    float dz = (float) (z - body.position.z / Config.SCALE);
                     float r = (float) (sqrt(dx*dx + dz*dz) + epsilon);
                     ySum -= G_VISUAL * log(body.mass) / r;
                 }

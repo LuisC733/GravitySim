@@ -16,7 +16,4 @@ public class Body {
         this.radius = radius;
         this.acceleration = new Vector3D(0,0,0);
     }
-    public void acceleration(Vector3D f){  
-        this.acceleration = f.scale(1.0/mass);
-    }
 }

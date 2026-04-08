@@ -1,5 +1,6 @@
 package com.nbodysim.core;
 
+import com.nbodysim.Config;
 import com.nbodysim.physics.*;
 
 class Octree {
@@ -93,9 +94,8 @@ class Octree {
         else if(node.body == null && !node.isLeaf()){
             double width = node.halfWidth * 2;
             double distance = (node.centerOfMass.sub(body.position)).magnitude();
-            double theta = 0.5;
 
-            if(width / distance < theta){
+            if(width / distance < Config.THETA){
                 Body dummy = new Body(node.centerOfMass, new Vector3D(0,0,0), node.totalMass, 0);
                 return g.calculateForce(body, dummy);
             }

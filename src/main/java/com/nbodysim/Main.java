@@ -8,22 +8,11 @@ import com.nbodysim.physics.*;
 import com.nbodysim.renderer.*;
 
 public class Main{
-    // TODO
-    // Barnes-Hut Algorithm
-    // Roche-Limit
-    // Collision Detection
-    // adaptive timesteps
-    // I/O Stream of Objects
-    // fixing Leapfrog
-    // improving Spacetime Grid & Light
-    // Particle Rendering
-
     public static void main(String[] args){
         Simulation sim = new Simulation();
         Renderer renderer = Renderer.get();
         ArrayList<SimBody> bodies = new ArrayList<>();
-        double SCALE = 1e10;
-
+        
         // sun
         bodies.add(new SimBody(new Body(new Vector3D(0,0,0), new Vector3D(0,0,0), 1.989e30, 5), 
                                new BodyRenderer(new Vector3f(0,0,0), 5.0f, new Vector3f(1.0f, 1.0f, 1.0f))));
@@ -69,9 +58,9 @@ public class Main{
 
             sim.updatePos();
             for(SimBody sb : bodies){
-                sb.renderer.setPosition((float) (sb.body.position.x / SCALE), 
-                                        (float) (sb.body.position.y / SCALE), 
-                                        (float) (sb.body.position.z / SCALE));
+                sb.renderer.setPosition((float) (sb.body.position.x / Config.SCALE), 
+                                        (float) (sb.body.position.y / Config.SCALE), 
+                                        (float) (sb.body.position.z / Config.SCALE));
             }
             renderer.drawFrame(dt);
         }

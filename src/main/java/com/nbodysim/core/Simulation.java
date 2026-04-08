@@ -1,22 +1,21 @@
 package com.nbodysim.core;
 
 import java.util.ArrayList;
+import com.nbodysim.Config;
 import com.nbodysim.physics.Body;
-
 public class Simulation{
 
     public ArrayList<Body> bodies = new ArrayList<>();
     public ArrayList<Vector3D> listOfForce = new ArrayList<>();
     Octree octree = new Octree();
     Octree.Node root = octree.new Node(new Vector3D(0, 0, 0), 0);
-    double dt = 3600;
 
     public void initSim(){
         accumulateForces();
         for(int i = 0; i < bodies.size(); i++){
             Body body = bodies.get(i);
             body.acceleration = listOfForce.get(i).scale(1.0 / body.mass);
-            body.velocity = body.velocity.sub(body.acceleration.scale(0.5 * dt));
+            body.velocity = body.velocity.sub(body.acceleration.scale(0.5 * Config.SIM_DT));
         }
     }
     private void accumulateForces(){
@@ -49,14 +48,14 @@ public class Simulation{
     public void updatePos(){
         for(int i = 0; i < bodies.size(); i++){
             Body body = bodies.get(i);
-            body.velocity = body.velocity.add(body.acceleration.scale(dt * 0.5));
-            body.position = body.position.add(body.velocity.scale(dt));        
+            body.velocity = body.velocity.add(body.acceleration.scale(Config.SIM_DT * 0.5));
+            body.position = body.position.add(body.velocity.scale(Config.SIM_DT));        
         }
         accumulateForces();
         for(int i = 0; i < bodies.size(); i++){
             Body body = bodies.get(i);
             body.acceleration = listOfForce.get(i).scale(1.0 / body.mass);
-            body.velocity = body.velocity.add(body.acceleration.scale(0.5 * dt));
+            body.velocity = body.velocity.add(body.acceleration.scale(0.5 * Config.SIM_DT));
         }
     }
 }
