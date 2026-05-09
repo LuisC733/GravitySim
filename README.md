@@ -12,7 +12,7 @@ This project simulates the gravitational interaction between multiple bodies in 
 
 Force accumulation is accelerated using a **Barnes-Hut Octree** (θ = 0.5), which reduces the complexity of pairwise force calculation from O(n²) to O(n log n) by approximating distant clusters as a single body.
 
-The simulation is rendered in real time via **OpenGL (Core Profile 3.3)** using LWJGL, with a Phong lighting model and a deformable spacetime grid visualizing gravitational potential.
+The simulation is rendered in real time via **OpenGL (Core Profile 3.3)** using LWJGL, with a Phong lighting model and a deformable spacetime grid visualizing gravitational potential. The grid uses a renderer-side Barnes-Hut style quadtree to approximate distant bodies and keep the visualization scalable.
 
 ---
 
@@ -31,6 +31,7 @@ src/main/java/com/nbodysim/
 └── renderer/
     ├── BodyRenderer.java    # VAO/VBO/EBO, sphere mesh, model matrix per body
     ├── Camera.java          # View and projection matrices
+    ├── GridPotentialTree.java # Quadtree approximation for spacetime grid potential
     ├── Renderer.java        # Coordinator / Singleton — owns the render loop
     ├── ShaderProgram.java   # GLSL compilation and linking
     └── SpacetimeGrid.java   # Deformable XZ-plane grid (gravitational potential)
@@ -45,6 +46,8 @@ src/main/java/com/nbodysim/
 - **Softening factor ε** — prevents force singularities at very small distances without altering large-scale dynamics
 - **Leapfrog integration** — velocity and position are updated in a staggered ("leapfrog") pattern; time-reversible and symplectic, which gives significantly better long-term energy conservation than Euler methods
 - **Barnes-Hut Octree** — bodies are inserted into an octree each step; distant clusters are approximated by their center of mass, controlled by the opening angle θ
+- **Renderer-side grid quadtree** — `GridPotentialTree` approximates distant bodies for the spacetime grid using `log(mass)` visual weights, reducing per-frame grid deformation from direct body iteration to tree-based potential queries
+- **Smoothed spacetime grid** — grid potential is softened, mapped through a nonlinear height curve, and smoothed with a local 3x3 filter for a more wave-like surface
 - **`BodyRenderer` per body** — each body owns its VAO/VBO/EBO and model matrix, keeping GPU resources explicit and isolated
 - **MVP matrix system** via JOML (`Matrix4f`) — model, view, and projection matrices passed as uniforms to the vertex shader
 - **Phong lighting** — ambient, diffuse and specular components computed in the fragment shader
