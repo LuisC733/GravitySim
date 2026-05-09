@@ -53,7 +53,7 @@ src/main/java/com/nbodysim/
 
 ## Build & Run
 
-**Requirements:** Java 17+, Maven, macOS (Apple Silicon)
+**Requirements:** Java 21+, Maven, macOS (Apple Silicon)
 
 ```bash
 mvn clean compile

@@ -1,7 +1,8 @@
 package com.nbodysim;
 
 public class Config {
-    private Config(){}
+    private Config() {
+    }
 
     public static final double SIM_DT = 3600;
     public static final double SCALE = 1e10;

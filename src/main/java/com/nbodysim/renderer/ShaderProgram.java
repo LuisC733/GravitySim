@@ -8,13 +8,12 @@ import java.nio.file.Paths;
 
 public class ShaderProgram {
 
-    int compileShader(int type, String sourceCode){
+    int compileShader(int type, String sourceCode) {
         int shaderObject = 0;
-        if(type == GL_VERTEX_SHADER){
+        if (type == GL_VERTEX_SHADER) {
             shaderObject = glCreateShader(GL_VERTEX_SHADER);
-        }
-        else if(type == GL_FRAGMENT_SHADER){
-             shaderObject = glCreateShader(GL_FRAGMENT_SHADER);
+        } else if (type == GL_FRAGMENT_SHADER) {
+            shaderObject = glCreateShader(GL_FRAGMENT_SHADER);
         }
 
         glShaderSource(shaderObject, sourceCode);
@@ -26,10 +25,10 @@ public class ShaderProgram {
         }
 
         return shaderObject;
-        }
+    }
 
-    int createShaderProgram(String vertexSource, String fragmentSource){
-        int programObject =  glCreateProgram();
+    int createShaderProgram(String vertexSource, String fragmentSource) {
+        int programObject = glCreateProgram();
         int VertexShader = compileShader(GL_VERTEX_SHADER, vertexSource);
         int FragmentShader = compileShader(GL_FRAGMENT_SHADER, fragmentSource);
         glAttachShader(programObject, VertexShader);
@@ -40,18 +39,19 @@ public class ShaderProgram {
             String log = glGetProgramInfoLog(programObject);
             throw new RuntimeException("Shader link error:\n" + log);
         }
-        
+
         glValidateProgram(programObject);
         return programObject;
     }
+
     String loadShader(String path) {
-    try {
-        return new String(Files.readAllBytes(Paths.get(path)));
-    } 
-    catch (IOException e) {
-        throw new RuntimeException("Shader not found: " + path, e);
+        try {
+            return new String(Files.readAllBytes(Paths.get(path)));
+        } catch (IOException e) {
+            throw new RuntimeException("Shader not found: " + path, e);
+        }
     }
-}
+
     String vertexShader = loadShader("src/main/resources/shaders/vertexSphere.glsl");
     String fragShader = loadShader("src/main/resources/shaders/fragSphere.glsl");
 }

@@ -8,8 +8,14 @@ uniform vec3 lightPos;
 uniform vec3 viewPos;
 uniform vec3 lightColor;
 uniform vec3 bodyColor;
+uniform bool emissive;
 
 void main(){
+    if (emissive) {
+        fragColor = vec4(bodyColor * lightColor * 1.35, 1.0f);
+        return;
+    }
+
     vec3 ambient = lightColor * 0.1f;
 
     vec3 normal = normalize(fragNormal);

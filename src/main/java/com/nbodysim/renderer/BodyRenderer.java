@@ -22,51 +22,57 @@ public class BodyRenderer {
     float radius;
     public Matrix4f modelMatrix;
     Vector3f bodyColor;
+    boolean emissive;
 
-    public BodyRenderer(Vector3f position, float radius, Vector3f bodyColor){
+    public BodyRenderer(Vector3f position, float radius, Vector3f bodyColor) {
+        this(position, radius, bodyColor, false);
+    }
+
+    public BodyRenderer(Vector3f position, float radius, Vector3f bodyColor, boolean emissive) {
         this.position = position;
         this.radius = radius;
         this.bodyColor = bodyColor;
+        this.emissive = emissive;
         this.modelMatrix = new Matrix4f().translation(position).scale(radius);
     }
-    
+
     int VAO = 0;
     int VBO = 0;
     int EBO = 0;
     int stacks = 32;
     int slices = 32;
 
-    void VertexSpecifications(){
+    void VertexSpecifications() {
         float[] vertexPositions = new float[((stacks + 1) * (slices + 1) * 3) * 2];
         int[] indices = new int[stacks * slices * 6];
 
         int v = 0;
-        for(int i = 0; i <= stacks; i++){
+        for (int i = 0; i <= stacks; i++) {
             double phi = i * (PI / stacks);
-            for(int j = 0; j <= slices; j++){
+            for (int j = 0; j <= slices; j++) {
                 double theta = j * (2 * PI / slices);
                 vertexPositions[v++] = (float) (sin(phi) * cos(theta)); // x
-                vertexPositions[v++] = (float) (cos(phi));              // y
+                vertexPositions[v++] = (float) (cos(phi)); // y
                 vertexPositions[v++] = (float) (sin(phi) * sin(theta)); // z
                 vertexPositions[v++] = (float) (sin(phi) * cos(theta)); // nx
-                vertexPositions[v++] = (float) (cos(phi));              // ny
+                vertexPositions[v++] = (float) (cos(phi)); // ny
                 vertexPositions[v++] = (float) (sin(phi) * sin(theta)); // nz
             }
         }
         int index = 0;
 
-        for(int i = 0; i < stacks; i++){
-            for(int j = 0; j < slices; j++){
+        for (int i = 0; i < stacks; i++) {
+            for (int j = 0; j < slices; j++) {
                 int A = i * (slices + 1) + j;
                 int B = (i + 1) * (slices + 1) + j;
                 int C = i * (slices + 1) + j + 1;
                 int D = (i + 1) * (slices + 1) + j + 1;
 
                 // Triangle 1
-                indices[index++] = A; 
-                indices[index++] = B; 
-                indices[index++] = C; 
-                
+                indices[index++] = A;
+                indices[index++] = B;
+                indices[index++] = C;
+
                 // Triangle 2
                 indices[index++] = B;
                 indices[index++] = C;
@@ -92,10 +98,15 @@ public class BodyRenderer {
         glBindVertexArray(0);
         glDisableVertexAttribArray(0);
     }
-    public void setPosition(float x, float y, float z){
+
+    public void setPosition(float x, float y, float z) {
         modelMatrix.identity();
-        Vector3f position = new Vector3f(x,y,z);
+        position.set(x, y, z);
         modelMatrix.translation(position);
         modelMatrix.scale(radius);
+    }
+
+    public Vector3f getPosition() {
+        return position;
     }
 }

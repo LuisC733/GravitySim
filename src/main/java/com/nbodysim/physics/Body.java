@@ -9,11 +9,11 @@ public class Body {
     public final double mass;
     public final double radius;
 
-    public Body(Vector3D position, Vector3D velocity, double mass, double radius){
+    public Body(Vector3D position, Vector3D velocity, double mass, double radius) {
         this.position = position;
         this.velocity = velocity;
         this.mass = mass;
         this.radius = radius;
-        this.acceleration = new Vector3D(0,0,0);
+        this.acceleration = new Vector3D(0, 0, 0);
     }
 }
