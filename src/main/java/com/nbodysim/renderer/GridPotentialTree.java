@@ -1,7 +1,6 @@
 package com.nbodysim.renderer;
 
 import java.util.ArrayList;
-
 import com.nbodysim.Config;
 import com.nbodysim.physics.Body;
 
