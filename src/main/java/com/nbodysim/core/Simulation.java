@@ -9,7 +9,7 @@ public class Simulation {
     public ArrayList<Body> bodies = new ArrayList<>();
     public ArrayList<Vector3D> listOfForce = new ArrayList<>();
     Octree octree = new Octree();
-    Octree.Node root = octree.new Node(new Vector3D(0, 0, 0), 0);
+    Octree.Node root;
 
     public void initSim() {
         accumulateForces();
@@ -27,7 +27,7 @@ public class Simulation {
             halfWidth = Math.max(halfWidth, Math.abs(b.position.y));
             halfWidth = Math.max(halfWidth, Math.abs(b.position.z));
         }
-        root = octree.new Node(new Vector3D(0, 0, 0), halfWidth * 1.1);
+        root = new Octree.Node(new Vector3D(0, 0, 0), halfWidth * 1.1);
 
         if (listOfForce.size() == 0) {
             for (int i = 0; i < length; i++) {

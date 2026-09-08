@@ -4,9 +4,9 @@ import com.nbodysim.Config;
 import com.nbodysim.physics.*;
 
 class Octree {
-    Gravity g = new Gravity();
+    private final Gravity g = new Gravity();
 
-    class Node {
+    static class Node {
         Vector3D center;
         double halfWidth;
         Vector3D centerOfMass;
