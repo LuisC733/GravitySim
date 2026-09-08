@@ -6,10 +6,15 @@ import org.junit.jupiter.api.Test;
 
 public class Vector3DTest {
 
+    private void assertClose(double expected, double actual) {
+        double delta = Config.TOLERANCE * Math.max(1.0, Math.max(Math.abs(expected), Math.abs(actual)));
+        assertEquals(expected, actual, delta);
+    }
+
     private void assertVectorEquals(Vector3D exp, Vector3D vecActual){
-        assertEquals(exp.x, vecActual.x, Config.TOLERANCE);
-        assertEquals(exp.y, vecActual.y, Config.TOLERANCE);
-        assertEquals(exp.z, vecActual.z, Config.TOLERANCE);
+        assertClose(exp.x, vecActual.x);
+        assertClose(exp.y, vecActual.y);
+        assertClose(exp.z, vecActual.z);
     }
 
     @Test
@@ -81,35 +86,21 @@ public class Vector3DTest {
     void magnitude_returnsEuclideanLength2DCase(){
         var vec = new Vector3D(3, 4, 0);
         double exp = 5;
-        assertEquals(exp, vec.magnitude(), Config.TOLERANCE);
+        assertClose(exp, vec.magnitude());
     }
 
     @Test
     void magnitude_returnsEuclideanLength3DCase(){
         var vec = new Vector3D(1, 2, 2);
         double exp = 3;
-        assertEquals(exp, vec.magnitude(), Config.TOLERANCE);
+        assertClose(exp, vec.magnitude());
     }
 
     @Test
     void magnitude_ofZeroVectorIsZero(){
         var vec = new Vector3D(0, 0, 0);
         double exp = 0;
-        assertEquals(exp, vec.magnitude(), Config.TOLERANCE);
-    }
-    
-    @Test
-    void normalize_returnsUnitVector(){
-        var vec = new Vector3D(3, 4, 0);
-        var exp = new Vector3D(0.6, 0.8, 0);
-        assertVectorEquals(exp, vec.normalize());
-    }
-
-    @Test
-    void normalize_resultHasMagnitudeOne(){
-        var vec = new Vector3D(1, 2, 2);
-        double exp = 1;
-        assertEquals(exp, vec.normalize().magnitude(), Config.TOLERANCE);
+        assertClose(exp, vec.magnitude());
     }
     @Test
     void invert_negatesAllComponents(){

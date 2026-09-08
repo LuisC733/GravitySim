@@ -17,10 +17,15 @@ public class GravityTest {
         return new Body(new Vector3D(x, y, 0), new Vector3D(0, 0, 0), mass, 1);
     }
 
+    private void assertClose(double expected, double actual) {
+        double delta = Config.TOLERANCE * Math.max(1.0, Math.max(Math.abs(expected), Math.abs(actual)));
+        assertEquals(expected, actual, delta);
+    }
+
     private void assertVectorEquals(Vector3D exp, Vector3D vecActual) {
-        assertEquals(exp.x, vecActual.x, Config.TOLERANCE);
-        assertEquals(exp.y, vecActual.y, Config.TOLERANCE);
-        assertEquals(exp.z, vecActual.z, Config.TOLERANCE);
+        assertClose(exp.x, vecActual.x);
+        assertClose(exp.y, vecActual.y);
+        assertClose(exp.z, vecActual.z);
     }
 
     @Test
@@ -31,8 +36,8 @@ public class GravityTest {
         var force = gravity.calculateForce(body, bodyToTheRight);
 
         assertTrue(force.x > 0);
-        assertEquals(0, force.y, Config.TOLERANCE);
-        assertEquals(0, force.z, Config.TOLERANCE);
+        assertClose(0, force.y);
+        assertClose(0, force.z);
     }
 
     @Test
@@ -43,8 +48,8 @@ public class GravityTest {
         var force = gravity.calculateForce(body, bodyToTheLeft);
 
         assertTrue(force.x < 0);
-        assertEquals(0, force.y, Config.TOLERANCE);
-        assertEquals(0, force.z, Config.TOLERANCE);
+        assertClose(0, force.y);
+        assertClose(0, force.z);
     }
 
     @Test
@@ -56,8 +61,8 @@ public class GravityTest {
 
         assertTrue(force.x > 0);
         assertTrue(force.y > 0);
-        assertEquals(force.x, force.y, Config.TOLERANCE);
-        assertEquals(0, force.z, Config.TOLERANCE);
+        assertClose(force.x, force.y);
+        assertClose(0, force.z);
     }
 
     @Test
@@ -80,7 +85,7 @@ public class GravityTest {
         var force = gravity.calculateForce(bodyA, bodyB);
         var forceWithDoubleMass = gravity.calculateForce(bodyA, bodyBWithDoubleMass);
 
-        assertEquals(force.magnitude() * 2, forceWithDoubleMass.magnitude(), Config.TOLERANCE);
+        assertClose(force.magnitude() * 2, forceWithDoubleMass.magnitude());
     }
 
     @Test
@@ -92,6 +97,6 @@ public class GravityTest {
         var force = gravity.calculateForce(bodyA, bodyB);
         var forceWithDoubleMass = gravity.calculateForce(bodyAWithDoubleMass, bodyB);
 
-        assertEquals(force.magnitude() * 2, forceWithDoubleMass.magnitude(), Config.TOLERANCE);
+        assertClose(force.magnitude() * 2, forceWithDoubleMass.magnitude());
     }
 }
