@@ -106,6 +106,9 @@ class Octree {
             return new Vector3D(0, 0, 0);
         } else if (node.body != null && node.isLeaf()) {
             return g.calculateForce(body, node.body);
+        } else if (node.body == null && node.isLeaf()) {
+            Body dummy = new Body(node.centerOfMass, new Vector3D(0, 0, 0), node.totalMass, 0);
+            return g.calculateForce(body, dummy);
         } else if (node.body == null && !node.isLeaf()) {
             double width = node.halfWidth * 2;
             double distance = (node.centerOfMass.sub(body.position)).magnitude();
