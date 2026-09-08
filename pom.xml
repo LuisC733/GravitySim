@@ -17,6 +17,8 @@
         <maven.compiler.plugin.version>3.13.0</maven.compiler.plugin.version>
         <maven.jar.plugin.version>3.4.2</maven.jar.plugin.version>
         <maven.surefire.version>3.2.5</maven.surefire.version>
+        <run.main>com.nbodysim.Main</run.main>
+        <run.scene>solar</run.scene>
     </properties>
 
     <dependencyManagement>
@@ -98,7 +100,8 @@
                     <arguments>
                         <argument>-classpath</argument>
                         <classpath/>
-                        <argument>com.nbodysim.Main</argument>
+                        <argument>${run.main}</argument>
+                        <argument>${run.scene}</argument>
                     </arguments>
                 </configuration>
             </plugin>
@@ -149,7 +152,8 @@
                             <argument>-XstartOnFirstThread</argument>
                             <argument>-classpath</argument>
                             <classpath/>
-                            <argument>com.nbodysim.Main</argument>
+                            <argument>${run.main}</argument>
+                            <argument>${run.scene}</argument>
                         </arguments>
                     </configuration>
                 </plugin>
@@ -172,7 +176,8 @@
                             <argument>-XstartOnFirstThread</argument>
                             <argument>-classpath</argument>
                             <classpath/>
-                            <argument>com.nbodysim.Main</argument>
+                            <argument>${run.main}</argument>
+                            <argument>${run.scene}</argument>
                         </arguments>
                     </configuration>
                 </plugin>
