@@ -1,6 +1,4 @@
 target/
 apache-maven-3.8.8-bin.tar.gz
-out/
-cp.txt
 .vscode/
 .DS_Store
