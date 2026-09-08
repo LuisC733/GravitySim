@@ -1,71 +1,72 @@
 package com.nbodysim;
 
 import static org.lwjgl.glfw.GLFW.*;
+
 import java.util.ArrayList;
+
 import org.joml.Vector3f;
-import com.nbodysim.core.*;
-import com.nbodysim.physics.*;
-import com.nbodysim.renderer.*;
+
+import com.nbodysim.core.SimBody;
+import com.nbodysim.core.Simulation;
+import com.nbodysim.renderer.BodyRenderer;
+import com.nbodysim.renderer.Renderer;
+import com.nbodysim.scenes.BodySpec;
+import com.nbodysim.scenes.Scene;
+import com.nbodysim.scenes.Scenes;
 
 public class Main {
+
     public static void main(String[] args) {
+        Scene scene = Scenes.byName(args.length > 0 ? args[0] : "solar");
+
+        // The spacetime grid reads Config.SCALE directly, so it has to be set
+        // before the renderer starts. See README for why this is still a global.
+        Config.SCALE = scene.renderScale();
+
         Simulation sim = new Simulation();
         Renderer renderer = Renderer.get();
         ArrayList<SimBody> bodies = new ArrayList<>();
+        boolean lightSourceSet = false;
 
-        // sun
-        BodyRenderer sunRenderer = new BodyRenderer(new Vector3f(0, 0, 0), 5.0f, new Vector3f(1.0f, 0.93f, 0.55f),
-                true);
-        bodies.add(new SimBody(new Body(new Vector3D(0, 0, 0), new Vector3D(0, 0, 0), 1.989e30, 5),
-                sunRenderer));
-        // mercury
-        bodies.add(new SimBody(new Body(new Vector3D(5.79e10, 0, 0), new Vector3D(0, 0, 47400), 3.285e23, 0.5),
-                new BodyRenderer(new Vector3f(5.79e10f, 0, 0), 0.5f, new Vector3f(0.7f, 0.65f, 0.6f))));
-        // venus
-        bodies.add(new SimBody(new Body(new Vector3D(1.082e11, 0, 0), new Vector3D(0, 0, 35000), 4.867e24, 0.8),
-                new BodyRenderer(new Vector3f(1.082e11f, 0, 0), 1.3f, new Vector3f(0.9f, 0.75f, 0.4f))));
-        // earth
-        bodies.add(new SimBody(new Body(new Vector3D(1.496e11, 0, 0), new Vector3D(0, 0, 29800), 5.972e24, 1.0),
-                new BodyRenderer(new Vector3f(1.496e11f, 0, 0), 1.3f, new Vector3f(0.2f, 0.5f, 1.0f))));
-        // mars
-        bodies.add(new SimBody(new Body(new Vector3D(2.279e11, 0, 0), new Vector3D(0, 0, 24100), 6.390e23, 0.6),
-                new BodyRenderer(new Vector3f(2.279e11f, 0, 0), 1.1f, new Vector3f(0.8f, 0.3f, 0.15f))));
-        // jupiter
-        bodies.add(new SimBody(new Body(new Vector3D(7.786e11, 0, 0), new Vector3D(0, 0, 13100), 1.898e27, 3.0),
-                new BodyRenderer(new Vector3f(7.786e11f, 0, 0), 3.0f, new Vector3f(0.8f, 0.6f, 0.45f))));
-        // saturn
-        bodies.add(new SimBody(new Body(new Vector3D(1.434e12, 0, 0), new Vector3D(0, 0, 9700), 5.683e26, 2.5),
-                new BodyRenderer(new Vector3f(1.434e12f, 0, 0), 2.5f, new Vector3f(0.85f, 0.75f, 0.5f))));
-        // uranus
-        bodies.add(new SimBody(new Body(new Vector3D(2.871e12, 0, 0), new Vector3D(0, 0, 6800), 8.681e25, 2.0),
-                new BodyRenderer(new Vector3f(2.871e12f, 0, 0), 2.0f, new Vector3f(0.5f, 0.85f, 0.9f))));
-        // neptun
-        bodies.add(new SimBody(new Body(new Vector3D(4.495e12, 0, 0), new Vector3D(0, 0, 5400), 1.024e26, 2.0),
-                new BodyRenderer(new Vector3f(4.495e12f, 0, 0), 2.0f, new Vector3f(0.2f, 0.4f, 0.9f))));
+        for (BodySpec spec : scene.build()) {
+            Vector3f color = new Vector3f(spec.red(), spec.green(), spec.blue());
+            Vector3f start = new Vector3f(
+                    (float) (spec.body().position.x / scene.renderScale()),
+                    (float) (spec.body().position.y / scene.renderScale()),
+                    (float) (spec.body().position.z / scene.renderScale()));
 
-        for (SimBody sb : bodies) {
-            sim.bodies.add(sb.body);
-            Renderer.get().bodies.add(sb.renderer);
-            Renderer.get().physicsBodies.add(sb.body);
+            BodyRenderer bodyRenderer = spec.emissive()
+                    ? new BodyRenderer(start, spec.renderRadius(), color, true)
+                    : new BodyRenderer(start, spec.renderRadius(), color);
+            if (spec.emissive() && !lightSourceSet) {
+                renderer.setLightSource(bodyRenderer);
+                lightSourceSet = true;
+            }
+
+            SimBody simBody = new SimBody(spec.body(), bodyRenderer);
+            bodies.add(simBody);
+            sim.bodies.add(simBody.body);
+            renderer.bodies.add(simBody.renderer);
+            renderer.physicsBodies.add(simBody.body);
         }
-        renderer.setLightSource(sunRenderer);
 
         sim.initSim();
         renderer.init();
 
         double lastFrameTime = glfwGetTime();
-        while (!glfwWindowShouldClose(Renderer.get().glfwWindow)) {
+        while (!glfwWindowShouldClose(renderer.glfwWindow)) {
             double now = glfwGetTime();
-            float dt = (float) (now - lastFrameTime);
+            float frameTime = (float) (now - lastFrameTime);
             lastFrameTime = now;
 
-            sim.updatePos();
+            sim.updatePos(scene.dt());
             for (SimBody sb : bodies) {
-                sb.renderer.setPosition((float) (sb.body.position.x / Config.SCALE),
-                        (float) (sb.body.position.y / Config.SCALE),
-                        (float) (sb.body.position.z / Config.SCALE));
+                sb.renderer.setPosition(
+                        (float) (sb.body.position.x / scene.renderScale()),
+                        (float) (sb.body.position.y / scene.renderScale()),
+                        (float) (sb.body.position.z / scene.renderScale()));
             }
-            renderer.drawFrame(dt);
+            renderer.drawFrame(frameTime);
         }
         renderer.cleanup();
     }
