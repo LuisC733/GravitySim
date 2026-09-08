@@ -16,7 +16,6 @@ public class Simulation {
         for (int i = 0; i < bodies.size(); i++) {
             Body body = bodies.get(i);
             body.acceleration = listOfForce.get(i).scale(1.0 / body.mass);
-            body.velocity = body.velocity.sub(body.acceleration.scale(0.5 * Config.SIM_DT));
         }
     }
 
