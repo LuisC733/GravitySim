@@ -24,10 +24,6 @@ public class Vector3D {
         return Math.sqrt(this.x * this.x + this.y * this.y + this.z * this.z);
     }
 
-    public Vector3D normalize() {
-        return new Vector3D(this.x / magnitude(), this.y / magnitude(), this.z / magnitude());
-    }
-
     public Vector3D sub(Vector3D other) {
         return new Vector3D(this.x - other.x, this.y - other.y, this.z - other.z);
     }
