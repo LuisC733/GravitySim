@@ -101,6 +101,10 @@ class Octree {
     }
 
     Vector3D traverse(Node node, Body body) {
+        return traverse(node, body, Config.THETA);
+    }
+
+    Vector3D traverse(Node node, Body body, double theta) {
         Vector3D sumOfForce = new Vector3D(0, 0, 0);
         if (node.body == body) {
             return new Vector3D(0, 0, 0);
@@ -113,13 +117,13 @@ class Octree {
             double width = node.halfWidth * 2;
             double distance = (node.centerOfMass.sub(body.position)).magnitude();
 
-            if (width / distance < Config.THETA) {
+            if (width / distance < theta) {
                 Body dummy = new Body(node.centerOfMass, new Vector3D(0, 0, 0), node.totalMass, 0);
                 return g.calculateForce(body, dummy);
             } else {
                 for (int i = 0; i < node.children.length; i++) {
                     if (node.children[i] != null) {
-                        sumOfForce = sumOfForce.add(traverse(node.children[i], body));
+                        sumOfForce = sumOfForce.add(traverse(node.children[i], body, theta));
                     }
                 }
             }
