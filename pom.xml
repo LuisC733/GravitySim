@@ -13,7 +13,6 @@
         <maven.compiler.release>21</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <lwjgl.version>3.4.1</lwjgl.version>
-        <lwjgl.natives>natives-macos-arm64</lwjgl.natives>
         <junit.jupiter.version>5.10.2</junit.jupiter.version>
         <maven.compiler.plugin.version>3.13.0</maven.compiler.plugin.version>
         <maven.jar.plugin.version>3.4.2</maven.jar.plugin.version>
@@ -95,12 +94,90 @@
                 <artifactId>exec-maven-plugin</artifactId>
                 <version>3.6.3</version>
                 <configuration>
-                    <mainClass>com.nbodysim.Main</mainClass>
-                    <jvmArgs>
-                        <jvmArg>-XstartOnFirstThread</jvmArg>
-                    </jvmArgs>
+                    <executable>java</executable>
+                    <arguments>
+                        <argument>-classpath</argument>
+                        <classpath/>
+                        <argument>com.nbodysim.Main</argument>
+                    </arguments>
                 </configuration>
             </plugin>
         </plugins>
     </build>
+    <profiles>
+    <profile>
+        <id>natives-linux</id>
+        <activation>
+            <os><family>unix</family><name>linux</name><arch>amd64</arch></os>
+        </activation>
+        <properties><lwjgl.natives>natives-linux</lwjgl.natives></properties>
+    </profile>
+    <profile>
+        <id>natives-linux-arm64</id>
+        <activation>
+            <os><family>unix</family><name>linux</name><arch>aarch64</arch></os>
+        </activation>
+        <properties><lwjgl.natives>natives-linux-arm64</lwjgl.natives></properties>
+    </profile>
+    <profile>
+        <id>natives-windows</id>
+        <activation>
+            <os><family>windows</family><arch>amd64</arch></os>
+        </activation>
+        <properties><lwjgl.natives>natives-windows</lwjgl.natives></properties>
+    </profile>
+    <profile>
+        <id>natives-windows-arm64</id>
+        <activation>
+            <os><family>windows</family><arch>aarch64</arch></os>
+        </activation>
+        <properties><lwjgl.natives>natives-windows-arm64</lwjgl.natives></properties>
+    </profile>
+    <profile>
+        <id>natives-macos</id>
+        <activation>
+            <os><family>mac</family><arch>x86_64</arch></os>
+        </activation>
+        <properties><lwjgl.natives>natives-macos</lwjgl.natives></properties>
+        <build>
+            <plugins>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>exec-maven-plugin</artifactId>
+                    <configuration>
+                        <arguments combine.self="override">
+                            <argument>-XstartOnFirstThread</argument>
+                            <argument>-classpath</argument>
+                            <classpath/>
+                            <argument>com.nbodysim.Main</argument>
+                        </arguments>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </build>
+    </profile>
+    <profile>
+        <id>natives-macos-arm64</id>
+        <activation>
+            <os><family>mac</family><arch>aarch64</arch></os>
+        </activation>
+        <properties><lwjgl.natives>natives-macos-arm64</lwjgl.natives></properties>
+        <build>
+            <plugins>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>exec-maven-plugin</artifactId>
+                    <configuration>
+                        <arguments combine.self="override">
+                            <argument>-XstartOnFirstThread</argument>
+                            <argument>-classpath</argument>
+                            <classpath/>
+                            <argument>com.nbodysim.Main</argument>
+                        </arguments>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </build>
+    </profile>
+</profiles>
 </project>
