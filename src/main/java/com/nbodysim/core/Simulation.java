@@ -11,6 +11,9 @@ public class Simulation {
     Octree octree = new Octree();
     Octree.Node root;
 
+    /** Barnes-Hut opening angle. 0 disables the approximation entirely. */
+    public double theta = Config.THETA;
+
     public void initSim() {
         accumulateForces();
         for (int i = 0; i < bodies.size(); i++) {
@@ -42,21 +45,25 @@ public class Simulation {
             octree.insert(root, body);
         }
         for (int i = 0; i < length; i++) {
-            listOfForce.set(i, (octree.traverse(root, bodies.get(i))));
+            listOfForce.set(i, octree.traverse(root, bodies.get(i), theta));
         }
     }
 
     public void updatePos() {
+        updatePos(Config.SIM_DT);
+    }
+
+    public void updatePos(double dt) {
         for (int i = 0; i < bodies.size(); i++) {
             Body body = bodies.get(i);
-            body.velocity = body.velocity.add(body.acceleration.scale(Config.SIM_DT * 0.5));
-            body.position = body.position.add(body.velocity.scale(Config.SIM_DT));
+            body.velocity = body.velocity.add(body.acceleration.scale(dt * 0.5));
+            body.position = body.position.add(body.velocity.scale(dt));
         }
         accumulateForces();
         for (int i = 0; i < bodies.size(); i++) {
             Body body = bodies.get(i);
             body.acceleration = listOfForce.get(i).scale(1.0 / body.mass);
-            body.velocity = body.velocity.add(body.acceleration.scale(0.5 * Config.SIM_DT));
+            body.velocity = body.velocity.add(body.acceleration.scale(0.5 * dt));
         }
     }
 }
